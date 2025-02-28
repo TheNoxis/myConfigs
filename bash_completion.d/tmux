@@ -1,0 +1,34 @@
+_tmux() {
+	local cur prev opts
+	local TMUX_BIN='/usr/bin/tmux'
+	local list_session
+	readarray list_session < <($TMUX_BIN list-sessions -F '#S')
+	COMPREPLY=()
+	cur="${COMP_WORDS[COMP_CWORD]}"
+	prev="${COMP_WORDS[COMP_CWORD-1]}"
+# 	opts='list-sessions attach-session kill-window new-window new-session'
+	readarray opts < <( $TMUX_BIN list-commands | awk '{print $1}' )
+
+	case "${prev}" in
+		'-F' )
+			return 0
+			;;
+		'list-sessions' )
+			COMPREPLY='-F'
+			return 0
+			;;
+		'attach' | 'attach-session' )
+			COMPREPLY=( $( compgen -W "${list_session[*]}" -- ${cur}) )
+			return 0
+			;;
+		*)
+			readarray COMPREPLY < <( $TMUX_BIN list-commands | awk "/^${prev}/ {print \$1}" )
+			return 0
+			;;
+	esac
+
+# 	COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+	COMPREPLY=( $(compgen -W "${opts[*]}" -- ${cur}) )
+}
+complete -F _tmux tmux
+
