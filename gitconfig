@@ -1,0 +1,69 @@
+# vim: ft=dosini
+[alias]
+# out = cherry --abbrev --verbose
+# out = log origin/master...
+	b = branch
+	ci = commit
+	co = checkout
+	glog  = log --graph --all --decorate --topo-order -30
+	# glog2 = log --graph --all --decorate --pretty='format:%d %Cgreen%h%Creset %an - %s'
+	gl = glog
+	l = log
+	# in = log ..origin/main
+	in = diff master origin/master --compact-summary
+	out = log --branches --not --remotes
+	pre-in = fetch
+	pre-out = fetch
+	pulla = pull --recurse-submodules
+	roll = reset HEAD~1 --soft
+	rolla = reset --hard
+	st = status
+	vd = difftool
+	vdiff = difftool
+	vimdiff = difftool
+	lsr = ls-remote --sort=committerdate
+#
+	un-add = restore --staged
+	un-rm  = checkout HEAD
+	un-rmci = reset --hard HEAD~1
+[merge]
+	tool = vimdiff
+	conflictstyle = diff3
+[mergetool]
+	prompt = false
+[push]
+	default = current
+	autoSetupRemote = true
+[user]
+	name = noxis
+	email = noxis@home.lan
+[color]
+	ui = true
+[format]
+#	pretty = format: * %C(auto)%h%C(reset) | %C(green)%cd%C(reset) | %C(cyan)%<(10)%aN%C(reset) | %s %C(auto)%d
+	pretty = format: %C(auto)%h%C(reset) | %C(green)%cd%C(reset) | %C(cyan)%<(10)%aN%C(reset) | %s %C(auto)%d
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
+[status]
+	short = true
+	showUntrackedFiles = normal
+	submoduleSummary = true
+[log]
+	date = format:%Y-%m-%d %H:%M:%S
+[pull]
+	rebase = false
+[init]
+	defaultBranch = main
+[credential]
+	helper = cache
+[advice]
+	addIgnoredFile = false
+	addEmptyPathspec = false
+[pager]
+	branch = false
+[core]
+	excludesfile = ~/.gitignore
+[help]
+	autocorrect = 1

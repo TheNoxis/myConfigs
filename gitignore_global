@@ -1,0 +1,9 @@
+#
+.direnv
+
+# Editor specific files and folders
+.idea
+.vscode
+*~
+*.swp
+*.swo
