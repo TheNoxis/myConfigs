@@ -2,8 +2,18 @@
 .direnv
 
 # Editor specific files and folders
-.idea
+.idea/
 .vscode
 *~
 *.swp
 *.swo
+
+# Python
+venv/
+.cache/
+__pycache__/
+*.pyc
+
+# Terraform
+.terraform
+.terraform.lock.hcl
