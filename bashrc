@@ -43,8 +43,8 @@ fi
 
 test -e __git_ps1 || function __git_ps1(){ return 0; }
 
-## Prompt bash
-## --
+
+## PROMPT -------------------------------
 function conda_info {
 #		local BLUE='\001\033[0;34m\002'
 	local YELLOW='\001\033[1;33m\002'
@@ -72,19 +72,27 @@ function pprom2 {
 		*) EXIT=$RED${EXIT};;
 	esac
 	## --
+	local SU="$LIGHT_GREEN"
 	if [ $(id -u) == "0" ]; then
-		SU="$RED"
-	else
-		SU="$LIGHT_GREEN"
-	fi
-	if [ -n "${SSHRCCLEANUP}" ]; then
-		R_HOST=$LIGHT_BLUE
-	else
-		R_HOST=$GRAY
+		SU="$RED❯"
 	fi
 	## --
+	local R_HOST=$GRAY
+	if [ -n "${SSHRCCLEANUP}" ]; then
+		R_HOST=$LIGHT_BLUE
+	fi
+	## --
+	local _ENV=''
+	shopt -s nocasematch
+	if [ -n "${ENV}" ] && [[ "${ENV}" =~ "prod" ]]; then
+		_ENV="${RED}(${ENV})${RESET}"
+	elif [ -n "${ENV}" ]; then
+		_ENV="${LIGHT_CYAN}(${ENV})${RESET}"
+	fi
+	shopt -u nocasematch
+	## --
 	PS1="$GRAY-(\
-${EXIT}$GRAY \
+${EXIT}${GRAY} \
 $GRAY\$(date +%H:%M.%S)$GRAY \
 $SU\u${LIGHT_BLUE}@$R_HOST\h$GRAY \
 $GRAY\j${LIGHT_BLUE}j\
@@ -104,7 +112,7 @@ $WHITE \w\
 $RESET\
 \[\e[38;5;238m\]\
 \
-$SU❯ $RESET"
+${_ENV}$SU❯ $RESET"
 #$YELLOW❯\$ $RESET\[\e[0m\]"
 
 	PS2="$SU"
@@ -162,28 +170,28 @@ bind '"\eOD":backward-word'
 stty start undef
 
 
-
-## Predictable SSH authentication socket location.
+## FORWARD AGENT ---------------------
 SOCK="$HOME/.ssh/${SSH_CLIENT/ */}_${HOSTNAME}_ssh_auth_sock"
-if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]; then
+if [[ -n ${SSH_AUTH_SOCK} && $SSH_AUTH_SOCK != $SOCK ]]; then
+	## Predictable SSH authentication socket location.
 	ln -sf $SSH_AUTH_SOCK $SOCK
+elif [[ -n ${WSL_DISTRO_NAME} && -x "$HOME/.local/bin/wsl-ssh-agent-relay" ]]; then
+	## Forward agent Agent Windows vers WSL
+	$HOME/.local/bin/wsl-ssh-agent-relay start
+	SOCK=${HOME}/.ssh/wsl-ssh-agent.sock
 fi
 export SSH_AUTH_SOCK=$SOCK
 
+
 ## Commande direnv
 which direnv &>/dev/null && eval "$(direnv hook bash)"
-which sshrc  &>/dev/null && alias ssh="sshrc"
 
-## Alias definitions:
-if [ -f ~/.bash_aliases ]; then
-	. ~/.bash_aliases
-fi
 
-## Completion commandes:
+## COMPLETIONS COMANDES --------------
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 	. /etc/bash_completion
 fi
-#
+
 BASH_COMPLETION_DIR_CUST="${HOME}/.bash_completion.d/"
 if [ -d "$BASH_COMPLETION_DIR_CUST" ]; then
 	for i in  $BASH_COMPLETION_DIR_CUST/*; do
@@ -192,12 +200,20 @@ if [ -d "$BASH_COMPLETION_DIR_CUST" ]; then
 	done
 fi
 
-##
-test -r ~/.local/bashrc && source ~/.local/bashrc
-
-## Complete custom:
+# Complete customs:
 complete -C $HOME/.local/bin/mc mc
 complete -C /usr/bin/nomad nomad
 complete -F __start_kubectl k
 complete -C /usr/bin/terraform terraform
 complete -C /usr/bin/terraform tf
+
+
+## Alias definitions:
+if [ -f ~/.bash_aliases ]; then
+	. ~/.bash_aliases
+fi
+which sshrc  &>/dev/null && alias ssh="sshrc"
+
+## LOCAL BASHRC -------------------
+test -r ~/.local/bashrc && source ~/.local/bashrc
+
