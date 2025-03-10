@@ -306,15 +306,9 @@ test -e ~/.bash_aliases && source ~/.bash_aliases || true
 # src: https://stackoverflow.com/questions/21806168/vim-use-ctrl-q-for-visual-block-mode-in-vim-gnome
 stty start undef
 
-##
-test -e ~/.local/zshrc && source ~/.local/zshrc || true
 
 ## Loading direnv
-if [ -x /usr/bin/direnv ]; then
-	eval "$(/usr/bin/direnv hook zsh)"
-elif [ -x ~/.local/bin/direnv ]; then
-	eval "$(~/.local/bin/direnv hook zsh)"
-fi
+which direnv &>/dev/null && eval "$(direnv hook zsh)"
 
 
 autoload -Uz vcs_info
@@ -357,3 +351,6 @@ compdef _kubectl k
 
 complete -o nospace -C /usr/bin/terraform terraform
 complete -o nospace -C /usr/bin/terraform tf
+
+##
+test -e ~/.local/zshrc && source ~/.local/zshrc || true
