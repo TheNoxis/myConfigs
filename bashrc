@@ -128,34 +128,16 @@ case "$TERM" in
 	xterm*|rxvt*) prompt_biz=yes;;
 esac
 
-
 if [ "$color_prompt" = yes ]; then
-	# PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-	PS1=''
-	PS1+='$( R=$?; test $R != 0 && echo -en "\e[31m-(\e[0m$R\e[31m)-\e;\n" )'
-	PS1+='\[\033[01;34m\][\[\033[0m\]\A\[\033[01;34m\]]\[\033[0m\]'
-	PS1+='\[\033[01;31m\](\[\033[0m\]\j\[\033[01;31m\])\[\033[0m\]'
-	PS1+='['
-	PS1+='\[\033[01;34m\]\h\[\033[0m\]'
-	PS1+='@'
-	if [ "$USER" == "root" ]; then
-		PS1+='\[\033[01;31m\]\u\[\033[0m\]'
-	else
-		PS1+='\[\033[01;32m\]\u\[\033[0m\]'
-	fi
-	PS1+=']'
-	PS1+=':\[\033[01;37m\]\w\[\033[0m\] \$ '
-	#
-	# pprom2
+	PROMPT_COMMAND=pprom2
 elif [ $prompt_biz = yes ]; then
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+	PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+	export PS1
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+	PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+	export PS1
 fi
 unset color_prompt force_color_prompt
-PROMPT_COMMAND=pprom2
-#export PS1
-
 
 
 # use ctl+Left & ctl+right keys to move forward and back in words
@@ -163,7 +145,6 @@ bind '"\eOC":forward-word'
 bind '"\eOD":backward-word'
 
 
-##
 # Pour remapé ctrl+q ou s, il faut supprimer l’ mappage des touche
 # fait par le terminal dans .bashrc ou .zshrc
 # src: https://stackoverflow.com/questions/21806168/vim-use-ctrl-q-for-visual-block-mode-in-vim-gnome
@@ -200,6 +181,7 @@ if [ -d "$BASH_COMPLETION_DIR_CUST" ]; then
 	done
 fi
 
+
 # Complete customs:
 complete -C $HOME/.local/bin/mc mc
 complete -C /usr/bin/nomad nomad
@@ -214,6 +196,6 @@ if [ -f ~/.bash_aliases ]; then
 fi
 which sshrc  &>/dev/null && alias ssh="sshrc"
 
+
 ## LOCAL BASHRC -------------------
 test -r ~/.local/bashrc && source ~/.local/bashrc
-
