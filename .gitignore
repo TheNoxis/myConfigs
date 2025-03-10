@@ -1,2 +1,8 @@
-# Personal local script for overwrite:
+## External files :
+vim/.netrwhist
+
+## Generated files by mesConfigs script:
+zsh.d/completion/_kubectl
+
+## Local script for personnal overwrite :
 myConfigs.post.sh

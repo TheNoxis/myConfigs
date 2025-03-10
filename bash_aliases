@@ -52,7 +52,8 @@ alias lla='ll -a'
 alias  la='l -a'
 
 ## Humman readable:
-alias df='df -h'
+alias df='df -hT'
+alias ddu='du --max-depth=1'
 alias du='du -h'
 alias free='free -m'
 
@@ -68,8 +69,8 @@ alias dmsg='dmesg --time-format iso'
 
 ## Autres
 alias tree="tree -Fa"
-alias Space='du -h --max-depth=1'
 alias gcc="gcc -ansi -Wall -o"
+alias memleak="ps -o time,ppid,pid,nice,pcpu,pmem,user,comm -A | sort -n -k 6 | tail -15"
 
 
 # ==================================================
@@ -99,6 +100,7 @@ alias meteo="weather"
 # alias  hgst='hg status .'
 alias cvs="$HOME/bin/cvs.py -r"
 alias g="git"
+
 
 # ==================================================
 ## WINDOWS/SESSION ---------------------------------

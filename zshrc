@@ -66,6 +66,15 @@ setopt completealiases
 # Pas de notification d'un process en tache de fond
 unsetopt notify
 
+# Comprend le commentaire en fin de commande 'ex: date # comment'
+setopt interactivecomments
+
+## Get notified when someone logs in:
+watch=all                       # watch all logins
+logcheck=30                     # every 30 seconds
+WATCHFMT="%n from %M has %a tty%l at %T %W"
+
+
 # ============================================
 ## BINDKEY -----------------------------------
 # ============================================
@@ -123,7 +132,6 @@ bindkey "^[[1;3D" backward-word
 # Affiche un message quand il ne trouve pas:
 setopt nomatch
 
-
 zstyle ':completion:*' verbose yes
 zstyle ':completion:*:messages' format '%d'
 zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
@@ -155,9 +163,7 @@ zstyle ':completion:*' show-completer true
 # The following lines were added by compinstall:
 zstyle :compinstall filename '~/.zshrc'
 
-
-
-## -- Complétion pour la commande killall:
+## -- PS
 zstyle ':completion:*:processes' command 'ps -ax'
 zstyle ':completion:*:processes-names' command 'ps -aeo comm='
 # zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##${~strip}}})'
@@ -171,6 +177,7 @@ zstyle -e ':completion:*:*:hosts' hosts 'reply=(${(s: :)${(ps:\t:)${${(f)~~"$(<~
 # strip='[:blank:]#[^[:blank:]]#'
 # zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${(s: :)${(ps:\t:)${${(f)~~"$(<~/.local/hosts)"}%%\#*}##${~strip}}})'
 
+## -- KILL + KILLALL
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:*:kill:*' menu yes select
 zstyle ':completion:*:*:killall:*:processes-names' list-colors '=(#b) #([0-9]#)*=0=01;31'
@@ -183,8 +190,7 @@ zstyle ':completion:*:(rm|mv|cp|scp|rsync|vi):*' ignore-line yes
 ## -- VIM*
 zstyle ':completion:*:*:vi(mdiff|m|):*:*files' ignored-patterns '*.o' '*.pyc' '*.gz' '*.tar'
 zstyle ':completion:*:*:vi(mdiff|m|):*' file-sort modification
-## -- SSH
-
+## -- DOCKER
 zstyle ':completion:*:*:docker:*' option-stacking yes
 
 
@@ -214,7 +220,7 @@ complete -o nospace -C /usr/bin/nomad nomad
 
 
 # ============================================
-## PLUGINS -----------------------------------
+## AGENT SSH ---------------------------------
 # ============================================
 
 ## Predictable SSH authentication socket location.
@@ -227,6 +233,11 @@ elif [[ -n ${WSL_DISTRO_NAME} && -x "$HOME/.local/bin/wsl-ssh-agent-relay" ]]; t
 	SOCK=${HOME}/.ssh/wsl-ssh-agent.sock
 fi
 export SSH_AUTH_SOCK=$SOCK
+
+
+# ============================================
+## PLUGINS -----------------------------------
+# ============================================
 
 ## Coloration syntaxique des commandes:
 source ~/.zsh.d/zsh-syntax-highlighting.git/zsh-syntax-highlighting.zsh
@@ -246,52 +257,17 @@ setopt HIST_IGNORE_ALL_DUPS
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
-# source ~/.zsh.d/antigen.git/antigen.zsh
-## Plugins: zsh-256color
-# antigen bundle chrissicool/zsh-256color
-## Plugins: zsh-syntax-highlighting
-# antigen bundle zsh-users/zsh-syntax-highlighting
-## Plugins: oh-my-zsh
-# ZSH="$HOME/.antigen/repos/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh.git/"
-# ZSH_CUSTOM="$HOME/.zsh.d/oh-my-zsh"
-# ZSH_THEME="agnoster"
-# ZSH_THEME="noxis"
-# antigen bundle robbyrussell/oh-my-zsh
-# By default, you will be prompted to check for upgrades every few weeks.
-# If you would like oh-my-zsh to automatically upgrade itself without prompting you:
-# DISABLE_UPDATE_PROMPT=true
-# To disable automatic upgrades, set the following in your ~/.zshrc:
-# DISABLE_AUTO_UPDATE=true
-## Plugins: git
-# antigen bundle git
-
-# Load the theme.
-# antigen theme clint
-
-# Tell antigen that you're done.
-# antigen apply
+## PROMPTS: autosuggestion -------------------
+# Source: https://github.com/zsh-users/zsh-autosuggestions
+source ~/.zsh.d/zsh-autosuggestions.git/zsh-autosuggestions.zsh
+# export ZSH_AUTOSUGGEST_STRATEGY=match_prev_cmd
+bindkey '^[[Z' autosuggest-accept
 
 
 # ============================================
 ## PROMPTS -----------------------------------
 # ============================================
-# autoload -U promptinit && promptinit
-# prompt clint
 source ~/.zsh.d/themes/noxis.zsh-theme
-
-
-## Get notified when someone logs in:
-# watch=all                       # watch all logins
-# logcheck=30                     # every 30 seconds
-# WATCHFMT="%n from %M has %a tty%l at %T %W"
-
-# ============================================
-## PROMPTS: autosuggestion -------------------
-# ============================================
-# https://github.com/zsh-users/zsh-autosuggestions
-source ~/.zsh.d/zsh-autosuggestions.git/zsh-autosuggestions.zsh
-# export ZSH_AUTOSUGGEST_STRATEGY=match_prev_cmd
-bindkey '^[[Z' autosuggest-accept
 
 
 # ============================================
