@@ -155,9 +155,9 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 # comme la recherche d'un paquet aptitude install moz<tab>
 zstyle ':completion:*' use-ip true
 zstyle ':completion:*' use-cache true
-zstyle ':completion:*' cache-path ~/.zsh_cache
+zstyle ':completion:*' cache-path ~/.zsh.d/cache
 zstyle ':completion::complete:*' use-cache true
-zstyle ':completion::complete:*' cache-path ~/.zsh_cache
+zstyle ':completion::complete:*' cache-path ~/.zsh.d/cache
 #
 zstyle ':completion:*' show-completer true
 # The following lines were added by compinstall:
@@ -166,6 +166,8 @@ zstyle :compinstall filename '~/.zshrc'
 ## -- PS
 zstyle ':completion:*:processes' command 'ps -ax'
 zstyle ':completion:*:processes-names' command 'ps -aeo comm='
+
+## -- SSH/SCP
 # zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${(s: :)${(ps:\t:)${${(f)~~"$(</etc/hosts)"}%%\#*}##${~strip}}})'
 # zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${(s: :)${(ps:\t:)${${(f)~~"$(<~/.local/hosts)"}%%\#*}##${~strip}}})'
 # zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.local_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
@@ -182,14 +184,18 @@ zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:*:kill:*' menu yes select
 zstyle ':completion:*:*:killall:*:processes-names' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:*:killall:*' menu yes select
+
 # -- SUDO
 zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
+
 ## -- SHELL + RSYNC + SCP
 # Pour éviter de proposer un élément déjà présent lors d'un cp, mv ou rm :
 zstyle ':completion:*:(rm|mv|cp|scp|rsync|vi):*' ignore-line yes
+
 ## -- VIM*
 zstyle ':completion:*:*:vi(mdiff|m|):*:*files' ignored-patterns '*.o' '*.pyc' '*.gz' '*.tar'
 zstyle ':completion:*:*:vi(mdiff|m|):*' file-sort modification
+
 ## -- DOCKER
 zstyle ':completion:*:*:docker:*' option-stacking yes
 
@@ -199,14 +205,11 @@ zstyle ':completion:*:*:docker:*' option-stacking yes
 
 ## Utilisation de la completion ZSH:
 fpath=(~/.zsh.d/completion $fpath)
-# fpath=(~/.zsh.d/zsh-ansible.git $fpath)
-#fpath=($fpath)
 
 # autoload -Uz compinit
 # autoload -U compinit
 # compinit
 
-compdef _kubectl k
 #
 autoload -Uz compinit
 compinit -i
@@ -214,9 +217,14 @@ compinit -i
 ## Utilisation de la completion bash:
 autoload -U +X bashcompinit && bashcompinit
 test -d /etc/bash_completion.d && source /etc/bash_completion.d/*
+
 ## Complete customs:
+compdef _vagrant v
+compdef _kubectl k
 complete -o nospace -C /home/noxis/.local/bin/mc mc
 complete -o nospace -C /usr/bin/nomad nomad
+complete -o nospace -C /usr/bin/terraform terraform
+complete -o nospace -C /usr/bin/terraform tf
 
 
 # ============================================
@@ -240,28 +248,34 @@ export SSH_AUTH_SOCK=$SOCK
 # ============================================
 
 ## Coloration syntaxique des commandes:
-source ~/.zsh.d/zsh-syntax-highlighting.git/zsh-syntax-highlighting.zsh
-ZSH_HIGHLIGHT_STYLES[path]=fg=256
-ZSH_HIGHLIGHT_STYLES[globbing]=fg=063
-ZSH_HIGHLIGHT_STYLES[single-quoted-argument]=fg=060
-ZSH_HIGHLIGHT_STYLES[double-quoted-argument]=fg=061
-ZSH_HIGHLIGHT_STYLES[alias]=fg=green,bold
-ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=011
-ZSH_HIGHLIGHT_STYLES[path_pathseparator]=fg=011
-ZSH_HIGHLIGHT_STYLES[redirection]=fg=001
-ZSH_HIGHLIGHT_STYLES[commandseparator]=fg=001
+if [ -e "${HOME}/.zsh.d/zsh-syntax-highlighting.git/zsh-syntax-highlighting.zsh" ]; then
+    source ${HOME}/.zsh.d/zsh-syntax-highlighting.git/zsh-syntax-highlighting.zsh
+    ZSH_HIGHLIGHT_STYLES[path]=fg=256
+    ZSH_HIGHLIGHT_STYLES[globbing]=fg=063
+    ZSH_HIGHLIGHT_STYLES[single-quoted-argument]=fg=060
+    ZSH_HIGHLIGHT_STYLES[double-quoted-argument]=fg=061
+    ZSH_HIGHLIGHT_STYLES[alias]=fg=green,bold
+    ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]=fg=011
+    ZSH_HIGHLIGHT_STYLES[path_pathseparator]=fg=011
+    ZSH_HIGHLIGHT_STYLES[redirection]=fg=001
+    ZSH_HIGHLIGHT_STYLES[commandseparator]=fg=001
+fi
 
 ## Navigation dans l'history avec flesh Haut/bas (A placer apres /zsh-syntax-highlighting.zsh)
-source ~/.zsh.d/zsh-history-substring-search.git/zsh-history-substring-search.zsh
-setopt HIST_IGNORE_ALL_DUPS
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
+if [ -e "${HOME}/.zsh.d/zsh-history-substring-search.git/zsh-history-substring-search.zsh" ]; then
+    source ${HOME}/.zsh.d/zsh-history-substring-search.git/zsh-history-substring-search.zsh
+    setopt HIST_IGNORE_ALL_DUPS
+    bindkey '^[[A' history-substring-search-up
+    bindkey '^[[B' history-substring-search-down
+fi
 
 ## PROMPTS: autosuggestion -------------------
 # Source: https://github.com/zsh-users/zsh-autosuggestions
-source ~/.zsh.d/zsh-autosuggestions.git/zsh-autosuggestions.zsh
-# export ZSH_AUTOSUGGEST_STRATEGY=match_prev_cmd
-bindkey '^[[Z' autosuggest-accept
+if [ -e "${HOME}/.zsh.d/zsh-autosuggestions.git/zsh-autosuggestions.zsh"]; then
+    source ${HOME}/.zsh.d/zsh-autosuggestions.git/zsh-autosuggestions.zsh
+    # export ZSH_AUTOSUGGEST_STRATEGY=match_prev_cmd
+    bindkey '^[[Z' autosuggest-accept
+fi
 
 
 # ============================================
@@ -321,12 +335,6 @@ zstyle ':vcs_info:git*' actionformats "%F{011}  %F{015}%b %F{red}%m%u%c%f"
 
 #add-zsh-hook precmd vcs_info
 
-
-compdef _vagrant v
-compdef _kubectl k
-
-complete -o nospace -C /usr/bin/terraform terraform
-complete -o nospace -C /usr/bin/terraform tf
 
 ##
 test -e ~/.local/zshrc && source ~/.local/zshrc || true
