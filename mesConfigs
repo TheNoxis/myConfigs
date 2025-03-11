@@ -1,0 +1,201 @@
+#! /usr/bin/env bash
+# vim: syntax=sh
+
+set -e
+set -u
+
+# =====================================
+## VARIABLES --------------------------
+# =====================================
+REMOTE=false
+DRYRUN=false
+SCRIPT_PATH=$(readlink -f "$0")
+SCRIPT_NAME=${SCRIPT_PATH##*/}
+REAL_PATH="${REAL_PATH:-$HOME/MesConfigs}"
+REAL_PATH=$(dirname "$SCRIPT_PATH")
+ARG_ARCHIVE=""
+ERR_MSG_ARG="Need argument, archive file, use -f or -d !"
+TMP_PATH=""
+
+
+# =====================================
+## FUNCTIONS --------------------------
+# =====================================
+
+function help() {
+	echo "Usage:"
+	echo "$SCRIPT_NAME [-c] <link|completion>"
+	echo "-c : Check mode (dry-run)."
+	echo ""
+	echo "------------"
+	echo "Exemple:"
+	echo "SCRIPT_PATH=\$PWD ./bin/${SCRIPT_NAME} link"
+}
+
+
+function print_status() {
+	local target=$1
+	local targetStatus=$2
+	case $targetStatus in
+		"OK")   tsColored='\e[32m OK \e[0m' ;;
+		"LINK") tsColored='\e[33mLINK\e[0m' ;;
+		"GOOD") tsColored='\e[32mGOOD\e[0m' ;;
+		"BCKP") tsColored='\e[34mBACK\e[0m' ;;
+		*)      tsColored="\e[31m$targetStatus\e[0m" ;;
+	esac
+	printf "%-40s [%4b]\n" "$target" "$tsColored"
+}
+
+
+function backupAndLink() {
+	local svnFile=$1
+	local target=$2
+	if [ ! -d "$(/usr/bin/dirname "$target")" ]; then
+		$DRYRUN || mkdir -p "$(/usr/bin/dirname "$target")"
+	fi
+	if [ -L "$target" ] && [ "$(readlink -f "$svnFile")" == "$(readlink -f "$target")" ]; then
+		# C'est un lien on ne touche rien:
+		print_status "$target" "OK"
+		return 0
+	elif [ -e "$target" ]; then
+		# Fichier/dossier existe, on sauvegarde
+		print_status "$target" "BCKP"
+		mv "$target" "${target}.old"
+	fi
+	# On cree le lien
+	print_status "$target" "LINK"
+	$DRYRUN || ln -sTf "$svnFile" "$target"
+}
+
+
+function set_link() {
+	##
+	$DRYRUN || read -r -p "Crée les liens avec pour source $REAL_PATH ? [y/N] " createLink
+	$DRYRUN && createLink=yes
+	if [[ "${createLink}" == +(Y|y|yes|YES) ]]; then
+		echo '-----------------------------------------------'
+		# Exemple: backupAndLink "REAL_PATH/file" "LINK_PATH"
+		backupAndLink "$REAL_PATH/vim" "$HOME/.vim"
+		backupAndLink "$REAL_PATH/vimrc" "$HOME/.vimrc"
+		backupAndLink "$REAL_PATH/bin" "$HOME/bin"
+		backupAndLink "$REAL_PATH/sbin" "$HOME/sbin"
+		backupAndLink "$REAL_PATH/bash_aliases" "$HOME/.bash_aliases"
+		backupAndLink "$REAL_PATH/bashrc" "$HOME/.bashrc"
+		backupAndLink "$REAL_PATH/mutt" "$HOME/.mutt"
+		backupAndLink "$REAL_PATH/muttrc" "$HOME/.muttrc"
+		backupAndLink "$REAL_PATH/profile" "$HOME/.profile"
+		backupAndLink "$REAL_PATH/screenrc" "$HOME/.screenrc"
+		backupAndLink "$REAL_PATH/bash_completion.d" "$HOME/.bash_completion.d"
+		backupAndLink "$REAL_PATH/ipython" "$HOME/.ipython"
+		backupAndLink "$REAL_PATH/i3_config" "$HOME/.config/i3/config"
+		backupAndLink "$REAL_PATH/black" "$HOME/.config/black"
+		# ZSH:
+		backupAndLink "$REAL_PATH/zsh.d" "$HOME/.zsh.d"
+		$DRYRUN || chmod g-w "$HOME/.zsh.d"
+		$DRYRUN || chmod g-w "$HOME/.zsh.d/completion"
+		# backupAndLink "$REAL_PATH/zsh_antigen" "$HOME/.antigen"
+		backupAndLink "$REAL_PATH/zshrc" "$HOME/.zshrc"
+		backupAndLink "$REAL_PATH/environment" "$HOME/.environment"
+
+		[ -e "/usr/bin/svn" ] && backupAndLink "$REAL_PATH/svn_config" "$HOME/.subversion/config"
+		[ -e "/usr/bin/hg" ]  && backupAndLink "$REAL_PATH/hgrc" "$HOME/.hgrc"
+		[ -e "/usr/bin/git" ] && backupAndLink "$REAL_PATH/gitconfig" "$HOME/.gitconfig"
+		[ -e "/usr/bin/git" ] && backupAndLink "$REAL_PATH/gitignore_global" "$HOME/.gitignore"
+
+		if [ -e "/usr/bin/tmux" ]; then
+			backupAndLink "$REAL_PATH/tmux" "$HOME/.tmux"
+			backupAndLink "$REAL_PATH/tmux.conf" "$HOME/.tmux.conf"
+		fi
+
+		backupAndLink "$REAL_PATH/ssh_rc" "$HOME/.ssh/rc"
+		#
+		test -d $HOME/.sshrc.d || mkdir $HOME/.sshrc.d
+		ln -sTf $PWD/bash_aliases $HOME/.sshrc.d/bash_aliases
+		backupAndLink "$REAL_PATH/bash_aliases"  "$HOME/.sshrc.d/bash_aliases"
+		backupAndLink "$REAL_PATH/sshrc"  "$HOME/.sshrc"
+		backupAndLink "$REAL_PATH/direnvrc"  "$HOME/.direnvrc"
+
+		if [ ! -e "$HOME/winhome" ] && [ -e "/mnt/c/Users/$USER" ]; then
+			ln -s "/mnt/c/Users/$USER" "$HOME/winhome"
+		fi
+
+		echo '-----------------------------------------------'
+	fi
+}
+
+function build_autocompletion {
+	echo "> Generate autocompletion"
+	##
+	if which cvs.py &>/dev/null; then
+		echo "  cvs..."
+		register-python-argcomplete -s zsh cvs.py > ~/.zsh.d/completion/_cvs
+		register-python-argcomplete -s bash cvs.py > ~/.bash_completion.d/cvs
+	fi
+	##
+	if which kubectl &>/dev/null; then
+		echo "  kubectl..."
+		kubectl completion zsh > ~/.zsh.d/completion/_kubectl
+		kubectl completion bash > ~/.bash_completion.d/kubectl
+	fi
+	##
+	if which helm &>/dev/null; then
+		echo "  helm..."
+		helm completion zsh > ~/.zsh.d/completion/_helm
+		helm completion bash > ~/.bash_completion.d/helm
+	fi
+	##
+	if which argocd &>/dev/null; then
+		echo "  argocd..."
+		argocd completion zsh > ~/.zsh.d/completion/_argocd
+		argocd completion bash > ~/.bash_completion.d/argocd
+	fi
+	##
+	if which kubescape &>/dev/null; then
+		echo "  kubescape..."
+		kubescape completion zsh  > ~/.zsh.d/completion/_kubescape
+		kubescape completion bash > ~/.bash_completion.d/kubescape
+	fi
+	##
+	if which vagrant &>/dev/null; then
+		echo "  vagrant..."
+		vagrant_version=$(vagrant --version | grep -Po  "\d+\.\d+\.\d+")
+		vagrant_path=/opt/vagrant/embedded/gems/gems/vagrant-${vagrant_version}/contrib/
+		cp ${vagrant_path}/zsh/_vagrant ~/.zsh.d/completion/_vagrant
+		cp ${vagrant_path}/bash/completion.sh ~/.bash_completion.d/vagrant
+	fi
+	##
+	if which pipx &>/dev/null; then
+		echo "  pipx..."
+		register-python-argcomplete --no-defaults --shell zsh pipx > ~/.zsh.d/completion/_pipx
+		register-python-argcomplete --no-defaults --shell bash pipx > ~/.bash_completion.d/pipx
+	fi
+}
+
+
+# =====================================
+## MAIN -------------------------------
+# =====================================
+
+while true; do
+	case $1 in
+		"-c")
+			echo "> Active check only."
+			DRYRUN=true
+			shift
+			;;
+		"link")
+			set_link
+			exit $?
+			;;
+		"completion")
+			build_autocompletion
+			exit $?
+			;;
+		*)
+			help
+			exit 0
+			;;
+	esac
+done
+
+exit 42
