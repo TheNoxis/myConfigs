@@ -271,7 +271,7 @@ fi
 
 ## PROMPTS: autosuggestion -------------------
 # Source: https://github.com/zsh-users/zsh-autosuggestions
-if [ -e "${HOME}/.zsh.d/zsh-autosuggestions.git/zsh-autosuggestions.zsh"]; then
+if [ -e "${HOME}/.zsh.d/zsh-autosuggestions.git/zsh-autosuggestions.zsh" ]; then
     source ${HOME}/.zsh.d/zsh-autosuggestions.git/zsh-autosuggestions.zsh
     # export ZSH_AUTOSUGGEST_STRATEGY=match_prev_cmd
     bindkey '^[[Z' autosuggest-accept
