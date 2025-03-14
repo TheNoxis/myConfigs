@@ -7,15 +7,11 @@ set -u
 # =====================================
 ## VARIABLES --------------------------
 # =====================================
-REMOTE=false
 DRYRUN=false
 SCRIPT_PATH=$(readlink -f "$0")
 SCRIPT_NAME=${SCRIPT_PATH##*/}
 REAL_PATH="${REAL_PATH:-$HOME/MesConfigs}"
 REAL_PATH=$(dirname "$SCRIPT_PATH")
-ARG_ARCHIVE=""
-ERR_MSG_ARG="Need argument, archive file, use -f or -d !"
-TMP_PATH=""
 
 
 # =====================================
