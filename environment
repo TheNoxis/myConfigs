@@ -1,0 +1,162 @@
+# vim: ft=sh
+
+
+# ==========================================
+## -- PATHs --------------------------------
+# ==========================================
+if [ -d "$HOME/bin" ]; then
+	export PATH="$HOME/bin:$PATH"
+fi
+if [ -d "$HOME/.local/bin" ]; then
+	export PATH="$HOME/.local/bin:$PATH"
+fi
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+
+# ==========================================
+## -- TERM ---------------------------------
+# ==========================================
+# Le nom d'un fichier d'informations sur le terminal situé dans /lib/terminfo,
+# ce fichier indique au programme en mode console comment effectuer certaines
+# tâches telles que l'affichage des couleurs. Il peut être utile de jouer avec
+# cette variable si vous essayez d'utiliser un programme d'émulation de terminal
+# inhabituel, ou si vous essayez de connecter un émulateur de terminal matériel
+# par le port série et que vous n'obtenez pas les résultats escomptés.
+## Xterm Color ------------------------
+if [ -z "$TMUX" ]; then
+	if [ -e '/lib/terminfo/x/xterm-256color' ]; then
+		# Debian
+		export TERM='xterm-256color'
+	elif [ -e '/usr/share/terminfo/x/xterm-256color' ]; then
+		# CentOS
+		export TERM='xterm-256color'
+	else
+		export TERM='xterm-color'
+	fi
+else
+	## Pour ne plus avoir de bug dans les applications ncurse (htop, mutt):
+	export TERM='screen-256color'
+fi
+
+
+# ==========================================
+## -- Paramètres régionaux -----------------
+# ==========================================
+# LANG: Le paramètre linguistique de base utilisé par les applications du système,
+# tant qu'il n'est pas contredit par une autre variable
+# LC_CTYPE: Le jeu de caractères utilisé pour saisir et afficher du texte
+# LC_NUMERIC: Mise en forme des valeurs numériques non-monétaires
+# LC_TIME: Format de la date et de l'heure
+# LC_COLLATE: Comment trier diverses informations, définit par exemple l'ordre alphabétique
+# afin que les éléments puissent être triés alphabétiquement en utilisant la commande sort
+# LC_MONETARY: Format des valeurs numériques monétaires
+# LC_MESSAGES: Langue utilisée pour afficher les messages à l'utilisateur
+# LC_PAPER: Définitions des formats de papier standard
+# LC_NAME: Format des noms
+# LC_ADDRESS: Format des adresses
+# LC_TELEPHONE: Structure des numéros de téléphone
+# LC_MEASUREMENT: Unités de mesure à utiliser
+# LC_IDENTIFICATION:
+# LC_ALL: Cette variable a un rôle puissant pour écraser les autres paramètres régionaux.
+# Lorsqu'une valeur lui est affectée, les applications utiliseront cette valeur
+# quelle que soient les valeurs des autres variables
+## Pour afficher la date Fr sur une machine UTC:
+export TZ="Europe/Paris"
+
+
+# ==========================================
+## -- SHELLs tools -------------------------
+# ==========================================
+## Variables pour les applications préférées ----------
+# PAGER -- Le nom de l'application utilisée pour afficher
+# des textes longs (sur plusieurs pages écran) par des commandes telles que man
+export PAGER='less'
+export LESS='FRX'
+# EDITOR -- Le nom de l'éditeur de texte préféré pour les utilisateurs.
+# Il sera utilisé par des commandes telles que mutt ou sudoedit
+export EDITOR='vim'
+# VISUAL -- A le même rôle que la variable « EDITOR » mais est prioritaire.
+# Si elle n'a pas de valeur « EDITOR » définie la valeur de l'application qui sera utilisée.
+export VISUAL='vim'
+# BROWSER -- Le nom du navigateur Web préféré pour les utilisateurs
+
+# You may uncomment the following lines if you want `ls' to be colorized:
+export LS_OPTIONS='--color=auto'
+# export GREP_OPTIONS='--colour=auto'
+export LS_COLORS="${LS_COLORS_SAVE}:*tmp=01;31:*.md=01;35:*.cfg=01;96"
+
+
+# USERNAME	nom_utilisateur	Le nom de l'utilisateur actuellement connecté. Cette variable est définie par le système. Vous ne devriez certainement pas changer sa valeur manuellement.
+# LOGNAME	nom_utilisateur	Similaire à USER, certains programmes utilisent celle-ci de préférence à USER .
+# HOME	/home/utilisateur	Emplacement du répertoire personnel de l'utilisateur actuellement connecté.
+# PWD	/home/utilisateur/Desktop	Le répertoire de travail courant de l'interpréteur de commande.
+# SHELL	/bin/bash	L'interpréteur de commande préféré de l'utilisateur tel qu'il est défini dans le fichier « /etc/passwd » .
+# POSIXLY_CORRECT	s.o.	L'existence même de cette variable d'environnement, indépendamment de sa valeur, oblige quelques utilitaires à se comporter de manière plus conforme au standard POSIX. Cela peut provoquer le dysfonctionnement de divers outils GNU qui facilitent la vie, mais c'est peut être justement ce qui est recherché pour faire fonctionner correctement de vieux scripts UNIX.
+# HOSTALIASES	/etc/host.aliases	Le nom du fichier contenant les alias des noms d'hôtes pour utiliser avec divers logiciels réseau.
+# TERMCAP		Cette variable peut être utilisée à la place de "TERM" pour spécifier les informations sur le terminal manuellement, plutôt que d'avoir recours à un fichier.
+# COLUMNS	80	Le nombre de colonnes sur la fenêtre de console. Essayez d'ajuster cette variable si les lignes semblent ne pas être coupées correctement sur la console.
+# LINES	25	Le nombre de lignes sur la fenêtre de console. Essayez d'ajuster cette variable si vous obtenez des résultats étranges lorsque vous faites défiler le texte.
+# http_proxy	http://user:passwd@proxy:port/	La variable pour utiliser un proxy, marche aussi avec HTTP_PROXY, ftp_proxy et FTP_proxy .
+
+
+# ==========================================
+## -- Compilation ------------
+# ==========================================
+## GCC: colored GCC warnings and errors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+# CC	gcc	Le nom du compilateur C à utiliser
+# CFLAGS	-o out.o	Une liste d'arguments de débogage / optimisation à passer au compilateur C
+export CFLAGS="-march=native -O3 -pipe"
+# CXXFLAGS	-Wall	Une liste d'arguments de débogage / optimisation à passer au compilateur C++
+export CXXFLAGS="${CFLAGS}"
+# CPPFLAGS	-DDEBUG	Une liste d'arguments à passer au préprocesseur / compilateur C/C++
+# LIBRARY_PATH	/usr/lib/firefox	Une liste de dossiers (séparés par deux-points) où chercher les fichiers de bibliothèques
+# INCLUDE	/opt/app/src/include	Une liste de dossiers (séparés par deux-points) où chercher les fichiers d'en-têtes
+# CPATH	..:$HOME/include:/usr/local/include	Une liste de dossiers (séparés par deux-points) où chercher les fichiers d'en-têtes
+export CHOST="x86_64-pc-linux-gnu"
+
+
+# ==========================================
+## -- Languages ----------------------------
+# ==========================================
+## Perl:
+# ----------------------------
+export PERL_LOCAL_LIB_ROOT="$HOME";
+export PERL_MB_OPT="--install_base $HOME";
+export PERL_MM_OPT="INSTALL_BASE=$HOME";
+export PERL5LIB="$HOME/lib/perl5/x86_64-linux-gnu-thread-multi:$HOME/lib/perl5";
+
+## Python:
+# ----------------------------
+# export PYENV_ROOT="$HOME/.pyenv"
+# command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+# eval "$(pyenv init -)"
+# eval "$(pyenv virtualenv-init -)"
+# Désactivation de la modification du prompt pour virtual_env de python:
+export VIRTUAL_ENV_DISABLE_PROMPT=false
+
+## Conda:
+# ----------------------------
+export ANACONDA_HOME=$HOME/conda/envs/
+
+
+# ==========================================
+## -- Subversion ---------------------------
+# ==========================================
+# export SVN_EDITOR='/opt/bin/svn_editor.sh'
+
+
+# ==========================================
+## -- Packagin -----------------------------
+# ==========================================
+#export DEBEMAIL='__EMAIL__'
+#export DEBFULLNAME='__NAME__'
+
+
+# ==========================================
+## -- Autres... ----------------------------
+# ==========================================
+export SYSTEMD_PAGER=''
+#export LIBVIRT_DEFAULT_URI='qemu+ssh://<login>@<hostname>/system'
+export LIBVIRT_DEFAULT_URI='qemu:///system'
+export VAGRANT_DEFAULT_PROVIDER='libvirt'
