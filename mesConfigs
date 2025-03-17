@@ -1,17 +1,31 @@
 #! /usr/bin/env bash
-# vim: syntax=sh
-
+# vim: ts=4 syntax=sh
 set -e
-set -u
+# set -x
+
+# =====================================
+## INFORMATIONS -----------------------
+# =====================================
+# Author: Henry Stéphane
+# Create date: 2015/54/08/20/15
+# Copyright: (C) 2015 Stéphane Henry
+# Describle: Installation, mise à jour et création de l'archive.
+#
+
 
 # =====================================
 ## VARIABLES --------------------------
 # =====================================
+REMOTE=false
 DRYRUN=false
 SCRIPT_PATH=$(readlink -f "$0")
 SCRIPT_NAME=${SCRIPT_PATH##*/}
 REAL_PATH="${REAL_PATH:-$HOME/MesConfigs}"
 REAL_PATH=$(dirname "$SCRIPT_PATH")
+ARG_ARCHIVE=""
+ERR_MSG_ARG="Need argument, archive file, use -f or -d !"
+TMP_PATH=""
+RSYNC_OPT="-avcE -b --suffix='.sav' --include='*'"
 
 
 # =====================================
@@ -19,13 +33,17 @@ REAL_PATH=$(dirname "$SCRIPT_PATH")
 # =====================================
 
 function help() {
-	echo "Usage:"
-	echo "$SCRIPT_NAME [-c] <link|completion>"
+	echo "$SCRIPT_NAME [-d|-f ../path/archive.tar.gz][-c] <install|link>"
+	echo "-f <file>: Archive to use."
 	echo "-c : Check mode (dry-run)."
 	echo ""
 	echo "------------"
-	echo "Exemple:"
+	echo "cd ~/git/MesConfigs/"
 	echo "SCRIPT_PATH=\$PWD ./bin/${SCRIPT_NAME} link"
+}
+
+function purge_tmp {
+	test -d "$TMP_PATH" && rm -rf "$TMP_PATH"
 }
 
 
@@ -64,6 +82,48 @@ function backupAndLink() {
 }
 
 
+function install() {
+	##
+	SRC_DIR=$PWD
+	## Déploiement avec une archive:
+	if [[ ${1} == *.tar.gz ]]; then
+		archive="$1"
+		TMP_PATH=$( mktemp -d -t "${SCRIPT_NAME}_XXXXX" )
+		trap purge_tmp EXIT
+		echo "> Temporay directory: $TMP_PATH"
+		test -e "$archive" || { echo "ERROR: $archive introuvable!"; exit 42; }
+		tar xzf "$archive" --strip-components=2 -C "$TMP_PATH"
+		SRC_DIR=$TMP_PATH
+	fi
+
+	##
+	# ARG_DIR="$( readlink -f "$1")"
+	# test -d "$ARG_DIR" && SRC_DIR=$ARG_DIR
+
+	## On demande confirmation avant action:
+	echo "Simulate sync $SRC_DIR to $REAL_PATH ..."
+	## On fait la synchro pour de faux:
+	rsync $RSYNC_OPT --dry-run "$SRC_DIR/" "$REAL_PATH"
+	$DRYRUN || read -r -p "Continue ? [y/N] " yesNo
+	$DRYRUN && yesNo=yes
+	if [[ "${yesNo:-N}" != +(Y|y|yes|YES) ]]; then
+		exit 0
+	fi
+
+
+	## Fix les droits de dossier/fichier de premier niveau pour mini secu:
+	# $DRYRUN || {
+		# find $SRC_DIR -maxdepth 1 -type f -exec chmod 600 '{}' \;
+		# find $SRC_DIR -maxdepth 1 -type d -exec chmod 700 '{}' \;
+		# find $SRC_DIR/bin  -maxdepth 1 -type f -exec chmod 700 '{}' \;
+		# find $SRC_DIR/sbin -maxdepth 1 -type f -exec chmod 700 '{}' \;
+	# }
+
+	## On fait la synchro pour de vrai:
+	$DRYRUN || rsync $RSYNC_OPT "$SRC_DIR/" "$REAL_PATH"
+}
+
+
 function set_link() {
 	##
 	$DRYRUN || read -r -p "Crée les liens avec pour source $REAL_PATH ? [y/N] " createLink
@@ -85,6 +145,7 @@ function set_link() {
 		backupAndLink "$REAL_PATH/ipython" "$HOME/.ipython"
 		backupAndLink "$REAL_PATH/i3_config" "$HOME/.config/i3/config"
 		backupAndLink "$REAL_PATH/black" "$HOME/.config/black"
+		backupAndLink "$REAL_PATH/direnvrc" "$HOME/.direnvrc"
 		# ZSH:
 		backupAndLink "$REAL_PATH/zsh.d" "$HOME/.zsh.d"
 		$DRYRUN || chmod g-w "$HOME/.zsh.d"
@@ -178,6 +239,21 @@ while true; do
 			echo "> Active check only."
 			DRYRUN=true
 			shift
+			;;
+		"-f")
+			if [ ! -f "$2" ]; then
+				echo "Bad file name ($2)" >&1
+				exit 1
+			fi
+			ARG_ARCHIVE=$2
+			echo "> File: $ARG_ARCHIVE"
+			shift 2
+			;;
+		"install")
+			install "${ARG_ARCHIVE}"
+			set_link
+			build_autocompletion
+			exit $?
 			;;
 		"link")
 			set_link
