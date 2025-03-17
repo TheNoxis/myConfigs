@@ -1,0 +1,66 @@
+# Example: export_alias zz "ls -la"
+
+alias_dir=$PWD/.direnv/aliases
+rm -rf "$alias_dir"
+
+export_alias() {
+  local name=$1
+  shift
+  local target="$alias_dir/$name"
+  mkdir -p "$alias_dir"
+  PATH_add "$alias_dir"
+  echo "#!/usr/bin/env bash" > "$target"
+  echo "$@ \"\$@\"" >> "$target"
+  chmod +x "$target"
+}
+
+export_alias4() {
+  local name=$1
+  # local alias_dir=$PWD/.direnv/aliases
+  mkdir -p "$alias_dir"
+  PATH_add "$alias_dir"
+  local target="$alias_dir/$name"
+  if declare -f "$name" >/dev/null; then
+    echo "#!$SHELL" > "$target"
+    declare -f "$name" >> "$target" 2>/dev/null
+    # Notice that we add shell variables to the function trigger.
+    echo "$name \$*" >> "$target"
+    chmod +x "$target"
+  fi
+}
+
+use_novops() {
+# TODO
+# local environement=$1
+# local configFile=$2
+	if test -f ./.novops.yml; then
+		# echo "File .novops.yml found!"
+		if has novops; then
+			#echo "Loading .novops.yml..."
+			set -a
+			. <(novops load --skip-tty-check --skip-workdir-check -f dotenv)
+			set +a
+		else
+			echo "use_novops: Command novops not found!"
+		fi
+	else
+		echo "use_novops: File .novops.yml not found!"
+	fi
+}
+
+export_vault(){
+	if ! has vault; then
+		echo "export_vault: Command vault not found!"
+	fi
+	# local path=$1
+	# local mount=${1%%/*}
+	# local field=${1##*/}
+	# local secret=
+	IFS="/" read mount secret field <<< ${1}
+	# PATH: kv_IDH/diun/DIUN_NOTIF_TELEGRAM_CHATIDS
+	# pour une varaible export DIUN_NOTIF_TELEGRAM_CHATIDS=xxxxxxxxxx
+	#val=$(vault kv get -mount=kv_IDH -field=DIUN_NOTIF_TELEGRAM_CHATIDS diun)
+
+	val=$(vault kv get -mount=${mount} -field=${field} diun)
+	export ${field}=${val}
+}
