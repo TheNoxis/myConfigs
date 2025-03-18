@@ -6,9 +6,6 @@ set -e
 # =====================================
 ## INFORMATIONS -----------------------
 # =====================================
-# Author: Henry Stéphane
-# Create date: 2015/54/08/20/15
-# Copyright: (C) 2015 Stéphane Henry
 # Describle: Installation, mise à jour et création de l'archive.
 #
 
@@ -21,7 +18,6 @@ SCRIPT_PATH=$(readlink -f "$0")
 SCRIPT_NAME=${SCRIPT_PATH##*/}
 REAL_PATH="${REAL_PATH:-$HOME/MesConfigs}"
 REAL_PATH=$(dirname "$SCRIPT_PATH")
-ARG_ARCHIVE=""
 
 
 # =====================================
@@ -113,8 +109,8 @@ function set_link() {
 
 		backupAndLink "$REAL_PATH/ssh_rc" "$HOME/.ssh/rc"
 		#
-		test -d $HOME/.sshrc.d || mkdir $HOME/.sshrc.d
-		ln -sTf $PWD/bash_aliases $HOME/.sshrc.d/bash_aliases
+		test -d "$HOME/.sshrc.d" || mkdir "$HOME/.sshrc.d"
+		ln -sTf "$PWD/bash_aliases" "$HOME/.sshrc.d/bash_aliases"
 		backupAndLink "$REAL_PATH/bash_aliases"  "$HOME/.sshrc.d/bash_aliases"
 		backupAndLink "$REAL_PATH/sshrc"  "$HOME/.sshrc"
 		backupAndLink "$REAL_PATH/direnvrc"  "$HOME/.direnvrc"
@@ -163,15 +159,15 @@ function build_autocompletion {
 	if which vagrant &>/dev/null; then
 		echo "  vagrant..."
 		vagrant_version=$(vagrant --version | grep -Po  "\d+\.\d+\.\d+")
-		vagrant_path=/opt/vagrant/embedded/gems/gems/vagrant-${vagrant_version}/contrib/
-		cp ${vagrant_path}/zsh/_vagrant ~/.zsh.d/completion/_vagrant
-		cp ${vagrant_path}/bash/completion.sh ~/.bash_completion.d/vagrant
+		vagrant_path="/opt/vagrant/embedded/gems/gems/vagrant-${vagrant_version}/contrib/"
+		cp "${vagrant_path}/zsh/_vagrant" "~/.zsh.d/completion/_vagrant"
+		cp "${vagrant_path}/bash/completion.sh" "~/.bash_completion.d/vagrant"
 	fi
 	##
 	if which pipx &>/dev/null; then
 		echo "  pipx..."
-		register-python-argcomplete --no-defaults --shell zsh pipx > ~/.zsh.d/completion/_pipx
-		register-python-argcomplete --no-defaults --shell bash pipx > ~/.bash_completion.d/pipx
+		register-python-argcomplete --no-defaults --shell zsh pipx > "~/.zsh.d/completion/_pipx"
+		register-python-argcomplete --no-defaults --shell bash pipx > "~/.bash_completion.d/pipx"
 	fi
 }
 
