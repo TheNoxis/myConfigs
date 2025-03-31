@@ -46,7 +46,7 @@ test -e __git_ps1 || function __git_ps1(){ return 0; }
 
 ## PROMPT -------------------------------
 function conda_info {
-#		local BLUE='\001\033[0;34m\002'
+	# local BLUE='\001\033[0;34m\002'
 	local YELLOW='\001\033[1;33m\002'
 	local WHITE='\001\033[1;37m\002'
 	[[ -n "$CONDA_DEFAULT_ENV" ]] || return

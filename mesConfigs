@@ -128,46 +128,46 @@ function build_autocompletion {
 	##
 	if which cvs.py &>/dev/null; then
 		echo "  cvs..."
-		register-python-argcomplete -s zsh cvs.py > ~/.zsh.d/completion/_cvs
-		register-python-argcomplete -s bash cvs.py > ~/.bash_completion.d/cvs
+		register-python-argcomplete -s zsh cvs.py > "${HOME}/.zsh.d/completion/_cvs"
+		register-python-argcomplete -s bash cvs.py > "${HOME}/.bash_completion.d/cvs"
 	fi
 	##
 	if which kubectl &>/dev/null; then
 		echo "  kubectl..."
-		kubectl completion zsh > ~/.zsh.d/completion/_kubectl
-		kubectl completion bash > ~/.bash_completion.d/kubectl
+		kubectl completion zsh > "${HOME}/.zsh.d/completion/_kubectl"
+		kubectl completion bash > "${HOME}/.bash_completion.d/kubectl"
 	fi
 	##
 	if which helm &>/dev/null; then
 		echo "  helm..."
-		helm completion zsh > ~/.zsh.d/completion/_helm
-		helm completion bash > ~/.bash_completion.d/helm
+		helm completion zsh > "${HOME}/.zsh.d/completion/_helm"
+		helm completion bash > "${HOME}/.bash_completion.d/helm"
 	fi
 	##
 	if which argocd &>/dev/null; then
 		echo "  argocd..."
-		argocd completion zsh > ~/.zsh.d/completion/_argocd
-		argocd completion bash > ~/.bash_completion.d/argocd
+		argocd completion zsh > "${HOME}/.zsh.d/completion/_argocd"
+		argocd completion bash > "${HOME}/.bash_completion.d/argocd"
 	fi
 	##
 	if which kubescape &>/dev/null; then
 		echo "  kubescape..."
-		kubescape completion zsh  > ~/.zsh.d/completion/_kubescape
-		kubescape completion bash > ~/.bash_completion.d/kubescape
+		kubescape completion zsh  > "${HOME}/.zsh.d/completion/_kubescape"
+		kubescape completion bash > "${HOME}/.bash_completion.d/kubescape"
 	fi
 	##
 	if which vagrant &>/dev/null; then
 		echo "  vagrant..."
 		vagrant_version=$(vagrant --version | grep -Po  "\d+\.\d+\.\d+")
 		vagrant_path="/opt/vagrant/embedded/gems/gems/vagrant-${vagrant_version}/contrib/"
-		cp "${vagrant_path}/zsh/_vagrant" "~/.zsh.d/completion/_vagrant"
-		cp "${vagrant_path}/bash/completion.sh" "~/.bash_completion.d/vagrant"
+		cp "${vagrant_path}/zsh/_vagrant" "${HOME}/.zsh.d/completion/_vagrant"
+		cp "${vagrant_path}/bash/completion.sh" "${HOME}/.bash_completion.d/vagrant"
 	fi
 	##
 	if which pipx &>/dev/null; then
 		echo "  pipx..."
-		register-python-argcomplete --no-defaults --shell zsh pipx > "~/.zsh.d/completion/_pipx"
-		register-python-argcomplete --no-defaults --shell bash pipx > "~/.bash_completion.d/pipx"
+		register-python-argcomplete --no-defaults --shell zsh pipx > "${HOME}/.zsh.d/completion/_pipx"
+		register-python-argcomplete --no-defaults --shell bash pipx > "${HOME}/.bash_completion.d/pipx"
 	fi
 }
 
