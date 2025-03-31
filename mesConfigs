@@ -40,6 +40,7 @@ function print_status() {
 		"LINK") tsColored='\e[33mLINK\e[0m' ;;
 		"GOOD") tsColored='\e[32mGOOD\e[0m' ;;
 		"BCKP") tsColored='\e[34mBACK\e[0m' ;;
+		"NO_F") tsColored='\e[34mNO_F\e[0m' ;;
 		*)      tsColored="\e[31m$targetStatus\e[0m" ;;
 	esac
 	printf "%-40s [%4b]\n" "$target" "$tsColored"
@@ -49,9 +50,16 @@ function print_status() {
 function backupAndLink() {
 	local svnFile=$1
 	local target=$2
+
+	if [ ! -e "${svnFile}" ]; then
+		print_status "$svnFile" "NO_F"
+		return 0
+	fi
+
 	if [ ! -d "$(/usr/bin/dirname "$target")" ]; then
 		$DRYRUN || mkdir -p "$(/usr/bin/dirname "$target")"
 	fi
+
 	if [ -L "$target" ] && [ "$(readlink -f "$svnFile")" == "$(readlink -f "$target")" ]; then
 		# C'est un lien on ne touche rien:
 		print_status "$target" "OK"
