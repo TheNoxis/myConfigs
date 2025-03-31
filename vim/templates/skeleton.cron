@@ -1,0 +1,24 @@
+# vim: ts=2 syntax=crontab
+
+# =====================================
+## INFORMATIONS -----------------------
+# =====================================
+# Author: Henry Stéphane
+# Create date: [:VIM_EVAL:]strftime('%Y/%m/%d - %H:%M')[:END_EVAL:]
+# Copyright: (C) [:VIM_EVAL:]strftime('%Y')[:END_EVAL:] Stéphane Henry
+# Hostname: [:VIM_EVAL:]$USER[:END_EVAL:]
+# Describle:
+#
+#
+## Help -------------------------------
+# @reboot   Au démarrage        Aucun
+# @yearly   Tous les ans        0 0 1 1 *
+# @annually Tous les ans        00 0 1 1 *
+# @monthly  Tous les mois       0 0 1 * *
+# @weekly   Toutes les semaines 0 0 * * 0
+# @daily    Tousles jours       0 0 * * *
+# @midnight Tous les jours      00 0 * * *
+# @hourly   Toutes les heures   0 * * * *
+
+# min hour day month numDays <user> <command>
+* * * * * [:VIM_EVAL:]$USER[:END_EVAL:] <command> 2>&1 > <script.log>
