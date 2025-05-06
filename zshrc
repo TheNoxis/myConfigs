@@ -221,10 +221,11 @@ test -d /etc/bash_completion.d && source /etc/bash_completion.d/*
 ## Complete customs:
 compdef _vagrant v
 compdef _kubectl k
-complete -o nospace -C /home/noxis/.local/bin/mc mc
-complete -o nospace -C /usr/bin/nomad nomad
-complete -o nospace -C /usr/bin/terraform terraform
-complete -o nospace -C /usr/bin/terraform tf
+# complete -o nospace -C <binary> <commande cible>
+complete -o nospace -C mc mc
+complete -o nospace -C nomad nomad
+complete -o nospace -C terraform terraform
+complete -o nospace -C terraform tf
 
 
 # ============================================
@@ -291,7 +292,7 @@ unalias -m '*'
 test -e ~/.bash_aliases && source ~/.bash_aliases || true
 
 ##
-# Pour remapé ctrl+q ou s, il faut supprimer l’ mappage des touche
+# Pour remapé ctrl+q ou s, il faut supprimer l'mappage des touche
 # fait par le terminal dans .bashrc ou .zshrc
 # src: https://stackoverflow.com/questions/21806168/vim-use-ctrl-q-for-visual-block-mode-in-vim-gnome
 stty start undef
@@ -338,3 +339,4 @@ zstyle ':vcs_info:git*' actionformats "%F{011}  %F{015}%b %F{red}%m%u%c%f"
 
 ##
 test -e ~/.local/zshrc && source ~/.local/zshrc || true
+

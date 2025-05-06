@@ -164,6 +164,12 @@ function build_autocompletion {
 		kubescape completion bash > "${HOME}/.bash_completion.d/kubescape"
 	fi
 	##
+	if which stern &>/dev/null; then
+		echo "  stern..."
+		stern --completion zsh  > "${HOME}/.zsh.d/completion/_stern"
+		stern --completion bash > "${HOME}/.bash_completion.d/stern"
+	fi
+	##
 	if which vagrant &>/dev/null; then
 		echo "  vagrant..."
 		vagrant_version=$(vagrant --version | grep -Po  "\d+\.\d+\.\d+")

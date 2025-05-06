@@ -192,11 +192,11 @@ PROMPT="%F{243}-($P_USER%F{33}@$P_HOST $P_CODE %F{243}on $PTIMER%F{243} at $P_DA
 \$(virtualenv_info)\$(conda_info)\
 $(sep 018 024)\
 \$(libvirt_context)\$(docker_context)\$(kubernetes_context)\
-$(sep 024 234)\
-\$vcs_info_msg_0_\
-$(sep 234 238)\
+$(sep 024 238)\
 %F{015} $P_DIR\
-$(sep 238 NONE)\
+$(sep 238 234)\
+\$vcs_info_msg_0_\
+$(sep 234 NONE)\
 $P_CHARPROMPT"
 
 PROMPT2="$P_CHARPROMPT"

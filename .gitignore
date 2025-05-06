@@ -1,10 +1,13 @@
 ## External files :
 vim/.netrwhist
+.direnv
+.vscode
+.sonarlint
 
 ## ZSH
 zsh.d/cache
 ## Generated files by mesConfigs script:
 zsh.d/completion/_kubectl
 
-## Local script for personnal overwrite :
+## Local script for personal overwrite :
 myConfigs.local.sh

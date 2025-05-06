@@ -183,11 +183,11 @@ fi
 
 
 # Complete customs:
-complete -C $HOME/.local/bin/mc mc
-complete -C /usr/bin/nomad nomad
+complete -C mc mc
+complete -C nomad nomad
 complete -F __start_kubectl k
-complete -C /usr/bin/terraform terraform
-complete -C /usr/bin/terraform tf
+complete -C terraform terraform
+complete -C terraform tf
 
 
 ## Alias definitions:
@@ -199,3 +199,4 @@ which sshrc  &>/dev/null && alias ssh="sshrc"
 
 ## LOCAL BASHRC -------------------
 test -r ~/.local/bashrc && source ~/.local/bashrc
+
