@@ -10,4 +10,4 @@ zsh.d/cache
 zsh.d/completion/_kubectl
 
 ## Local script for personal overwrite :
-myConfigs.local.sh
+mesConfigs.local.sh

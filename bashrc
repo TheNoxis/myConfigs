@@ -186,6 +186,7 @@ fi
 complete -C mc mc
 complete -C nomad nomad
 complete -F __start_kubectl k
+complete -F __start_kubectl kubecolor
 complete -C terraform terraform
 complete -C terraform tf
 

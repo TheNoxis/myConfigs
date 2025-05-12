@@ -1,0 +1,80 @@
+[submodule "vim-airline"]
+	path = vim/bundle-available/vim-airline.git
+	url = https://github.com/bling/vim-airline
+[submodule "vim-autocomplpop"]
+	path = vim/bundle-available/vim-AutoComplPop.git
+	url = https://github.com/vim-scripts/AutoComplPop.git
+[submodule "vim-autopairs"]
+	path = vim/bundle-available/vim-autopairs.git
+	url = https://github.com/jiangmiao/auto-pairs.git
+[submodule "vim-delimitmate"]
+	path = vim/bundle-available/vim-delimitMate.git
+	url = https://github.com/Raimondi/delimitMate.git
+[submodule "vim-multiplecursor"]
+	path = vim/bundle-available/vim-multiplecursor.git
+	url = https://github.com/terryma/vim-multiple-cursors.git
+[submodule "vim-neocomplcache"]
+	path = vim/bundle-available/vim-neocomplcache.git
+	url = https://github.com/Shougo/neocomplcache.vim
+[submodule "vim-neocomplete"]
+	path = vim/bundle-available/vim-neocomplete.git
+	url = https://github.com/Shougo/neocomplete.vim
+[submodule "vim-neosnippet"]
+	path = vim/bundle-available/vim-neosnippet.git
+	url = https://github.com/Shougo/neosnippet.vim
+[submodule "vim-neosnippet-snippets"]
+	path = vim/bundle-available/vim-neosnippet-snippets.git
+	url = https://github.com/Shougo/neosnippet-snippets
+[submodule "vim-nerdcommender"]
+	path = vim/bundle-available/vim-nerdcommenter.git
+	url = https://github.com/scrooloose/nerdcommenter.git
+[submodule "vim-syntastic"]
+	path = vim/bundle-available/vim-syntastic.git
+	url = https://github.com/scrooloose/syntastic.git
+[submodule "vim-tagbar"]
+	path = vim/bundle-available/vim-tagbar.git
+	url = https://github.com/majutsushi/tagbar.git
+[submodule "vim-taglist"]
+	path = vim/bundle-available/vim-taglist.git
+	url = https://github.com/vim-scripts/taglist.vim.git
+[submodule "vim-tmux"]
+	path = vim/bundle-available/vim-tmux.git
+	url = https://github.com/tmux-plugins/vim-tmux.git
+[submodule "vim-direnv.git"]
+	path = vim/bundle-available/vim-direnv.git
+	url = https://github.com/direnv/direnv.vim.git
+[submodule "zsh-ansible"]
+	path = zsh.d/zsh-ansible.git
+	url = https://github.com/MicahElliott/zsh-ansible
+[submodule "antigen"]
+	path = zsh.d/zsh-antigen.git
+	url = https://github.com/zsh-users/antigen.git
+[submodule "zsh-autosuggestions"]
+	path = zsh.d/zsh-autosuggestions.git
+	url = https://github.com/zsh-users/zsh-autosuggestions
+[submodule "zsh-completions"]
+	path = zsh.d/zsh-completions.git
+	url = https://github.com/zsh-users/zsh-completions.git
+[submodule "zsh-syntax-highlighting"]
+	path = zsh.d/zsh-syntax-highlighting.git
+	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule "vim-hcl.git"]
+	path = vim/bundle-available/vim-hcl.git
+	url = https://github.com/jvirtanen/vim-hcl.git
+[submodule "zsh-history-substring-search.git"]
+	path = zsh.d/zsh-history-substring-search.git
+	url = https://github.com/zsh-users/zsh-history-substring-search.git
+[submodule "vendor/sshrc"]
+	path = vendor/sshrc
+	url = https://github.com/cdown/sshrc.git
+	branch = O.6.2
+[submodule "vim-jenkinsfile"]
+	path = vim/bundle-available/vim-jenkinsfile.git
+	url = https://github.com/martinda/Jenkinsfile-vim-syntax.git
+[submodule "vim-surround"]
+	path = vim/bundle-available/vim-surround.git
+	url = https://github.com/tpope/vim-surround.git
+[submodule "vim-polyglot"]
+	path = vim/bundle-available/vim-polyglot.git
+	url = https://github.com/sheerun/vim-polyglot.git
+	

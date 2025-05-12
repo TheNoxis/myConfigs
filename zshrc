@@ -221,6 +221,7 @@ test -d /etc/bash_completion.d && source /etc/bash_completion.d/*
 ## Complete customs:
 compdef _vagrant v
 compdef _kubectl k
+compdef _kubectl kubecolor
 # complete -o nospace -C <binary> <commande cible>
 complete -o nospace -C mc mc
 complete -o nospace -C nomad nomad

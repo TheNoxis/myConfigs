@@ -25,9 +25,10 @@ REAL_PATH=$(dirname "$SCRIPT_PATH")
 # =====================================
 
 function help() {
-	echo "$SCRIPT_NAME [-ch] <install|link|completion>"
-	echo "-f <file>: Archive to use."
-	echo "-c : Check mode (dry-run)."
+	echo "USAGE"
+	echo "    $SCRIPT_NAME [-ch] <install|link|completion>"
+	echo "OPTIONS"
+	echo "    -c : Check mode (dry-run)."
 	echo ""
 }
 
