@@ -61,6 +61,18 @@ export_vault(){
 	# pour une varaible export DIUN_NOTIF_TELEGRAM_CHATIDS=xxxxxxxxxx
 	#val=$(vault kv get -mount=kv_IDH -field=DIUN_NOTIF_TELEGRAM_CHATIDS diun)
 
-	val=$(vault kv get -mount=${mount} -field=${field} diun)
+	local val=$(vault kv get -mount=${mount} -field=${field} diun)
 	export ${field}=${val}
+}
+
+use_goenv () {
+	local version=$1
+	local mod_ver=$(grep -Pos '^go\ (\K[^ \#]+)' go.mod)
+	if [ ${mod_ver} != ${version} ]; then
+		echo "direnv: WARNING .envrc and go.mod versions mismatch!"
+	fi
+	which -s goenv || echo -n "ERROR: goenv not found!\nDownload at https://github.com/ankitcharolia/goenv/releases"
+	goenv --list | grep -q $version || goenv --install $version
+	goenv --use $version &>/dev/null
+	PATH_add "${HOME}/.go/${version}/bin"
 }
