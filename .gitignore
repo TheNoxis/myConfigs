@@ -6,8 +6,24 @@ vim/.netrwhist
 
 ## ZSH
 zsh.d/cache
+
 ## Generated files by mesConfigs script:
+bash_completion.d/argocd
+bash_completion.d/cvs
+bash_completion.d/helm
+bash_completion.d/kubectl
+bash_completion.d/kubescape
+bash_completion.d/pipx
+bash_completion.d/stern
+bash_completion.d/vagrant
+zsh.d/completion/_argocd
+zsh.d/completion/_cvs
+zsh.d/completion/_helm
 zsh.d/completion/_kubectl
+zsh.d/completion/_kubescape
+zsh.d/completion/_pipx
+zsh.d/completion/_stern
+zsh.d/completion/_vagrant
 
 ## Local script for personal overwrite :
 mesConfigs.local.sh

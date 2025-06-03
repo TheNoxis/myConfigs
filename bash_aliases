@@ -160,7 +160,7 @@ alias k="kubecolor"
 # alias k="kubectl"
 alias kapi="kubecolor api-resources --sort-by=name"
 alias kcani="kubecolor auth can-i –list"
-alias kgc="kubecolor get csr -o wide"
+alias kgcsr="kubecolor get csr -o wide"
 alias kgcm="kubecolor get configmap -o wide"
 alias kgd="kubecolor get deployments -o wide"
 alias kge="kubecolor get events --sort-by='.metadata.creationTimestamp'"
@@ -173,7 +173,7 @@ alias kgpv="kubecolor get pv -o wide"
 alias kgpvc="kubecolor get pvc -o wide"
 alias kgs="kubecolor get rc,services -o wide"
 alias kgsa="kubecolor get serviceaccounts"
-alias kgsf="kubectl get statefulsets -o wide"
+alias kgsfs="kubecolor get statefulsets -o wide"
 ## argocd
 alias argocd-klogin='argocd login --grpc-web --name tpkube --username admin --insecure --password $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo) $(argocd context | awk "/^*/ {print \$3}")'
 alias argocd-get-password='kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo'

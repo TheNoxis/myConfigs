@@ -121,10 +121,10 @@ export CHOST="x86_64-pc-linux-gnu"
 # ==========================================
 ## Perl:
 # ----------------------------
-export PERL_LOCAL_LIB_ROOT="$HOME";
-export PERL_MB_OPT="--install_base $HOME";
-export PERL_MM_OPT="INSTALL_BASE=$HOME";
-export PERL5LIB="$HOME/lib/perl5/x86_64-linux-gnu-thread-multi:$HOME/lib/perl5";
+# export PERL_LOCAL_LIB_ROOT="$HOME"
+# export PERL_MB_OPT="--install_base $HOME"
+# export PERL_MM_OPT="INSTALL_BASE=$HOME"
+# export PERL5LIB="$HOME/lib/perl5/x86_64-linux-gnu-thread-multi:$HOME/lib/perl5"
 
 ## Python:
 # ----------------------------
@@ -137,7 +137,7 @@ export VIRTUAL_ENV_DISABLE_PROMPT=false
 
 ## Conda:
 # ----------------------------
-export ANACONDA_HOME=$HOME/conda/envs/
+export ANACONDA_HOME="$HOME/conda/envs/"
 
 
 # ==========================================
