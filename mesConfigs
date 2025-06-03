@@ -98,6 +98,7 @@ function set_link() {
 		backupAndLink "$REAL_PATH/i3_config" "$HOME/.config/i3/config"
 		backupAndLink "$REAL_PATH/black" "$HOME/.config/black"
 		backupAndLink "$REAL_PATH/direnvrc" "$HOME/.direnvrc"
+		backupAndLink "$REAL_PATH/jq" "$HOME/.jq"
 		# ZSH:
 		backupAndLink "$REAL_PATH/zsh.d" "$HOME/.zsh.d"
 		$DRYRUN || chmod g-w "$HOME/.zsh.d"
@@ -187,6 +188,19 @@ function build_autocompletion {
 }
 
 
+function add_submodules {
+	while read -r module; do
+		name=$(echo "$module" | sed -n 's/\[submodule "\(.*\)"\]/\1/p')
+		path=$(git config -f .gitmodules --get submodule."$name".path)
+		url=$(git config -f .gitmodules --get submodule."$name".url)
+
+		if [ -n "$path" ] && [ -n "$url" ]; then
+			echo "Ajout du sous-module $name..."
+			git submodule add -f "$url" "$path"
+		fi
+	done < <(grep "\[submodule" .gitmodules)
+}
+
 # =====================================
 ## MAIN -------------------------------
 # =====================================
@@ -213,6 +227,10 @@ while true; do
 			;;
 		"completion")
 			build_autocompletion
+			exit $?
+			;;
+		"submodules")
+			add_submodules
 			exit $?
 			;;
 		*)
