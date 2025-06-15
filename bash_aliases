@@ -174,6 +174,9 @@ alias kgpvc="kubecolor get pvc -o wide"
 alias kgs="kubecolor get rc,services -o wide"
 alias kgsa="kubecolor get serviceaccounts"
 alias kgsfs="kubecolor get statefulsets -o wide"
+alias kil="kubecolor image list"
+alias kgr="kubecolor get role"
+alias kgrb="kubecolor get rolebinding -o wide"
 ## argocd
 alias argocd-klogin='argocd login --grpc-web --name tpkube --username admin --insecure --password $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo) $(argocd context | awk "/^*/ {print \$3}")'
 alias argocd-get-password='kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo'

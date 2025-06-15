@@ -189,6 +189,7 @@ complete -F __start_kubectl k
 complete -F __start_kubectl kubecolor
 complete -C terraform terraform
 complete -C terraform tf
+complete -C vault vault
 
 
 ## Alias definitions:
