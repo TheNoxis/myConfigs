@@ -99,6 +99,7 @@ function set_link() {
 		backupAndLink "$REAL_PATH/black" "$HOME/.config/black"
 		backupAndLink "$REAL_PATH/direnvrc" "$HOME/.direnvrc"
 		backupAndLink "$REAL_PATH/jq" "$HOME/.jq"
+		backupAndLink "$REAL_PATH/k9s" "$HOME/.config/k9s"
 		# ZSH:
 		backupAndLink "$REAL_PATH/zsh.d" "$HOME/.zsh.d"
 		$DRYRUN || chmod g-w "$HOME/.zsh.d"
