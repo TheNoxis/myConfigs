@@ -124,6 +124,11 @@ bindkey "^[[1;3D" backward-word
 ## /home/noxis/.zshrc:bindkey:122: no such keymap `menuselect'`
 #bindkey -M menuselect '^[[Z' reverse-menu-complete
 
+# ============================================
+## ALIASES -----------------------------------
+# ============================================
+unalias -m '*'
+test -e ~/.bash_aliases && source ~/.bash_aliases || true
 
 # ============================================
 ## COMPLETION --------------------------------
@@ -210,23 +215,29 @@ fpath=(~/.zsh.d/completion $fpath)
 # autoload -U compinit
 # compinit
 
-#
-autoload -Uz compinit
-compinit -i
 
-## Utilisation de la completion bash:
+
+## -- Bash completion style
 autoload -U +X bashcompinit && bashcompinit
-test -d /etc/bash_completion.d && source /etc/bash_completion.d/*
-
-## Complete customs:
-compdef _vagrant v
-compdef _kubectl k
-compdef _kubectl kubecolor
+# test -d /etc/bash_completion.d && source /etc/bash_completion.d/*
+# -
 # complete -o nospace -C <binary> <commande cible>
 complete -o nospace -C mc mc
 complete -o nospace -C nomad nomad
 complete -o nospace -C terraform terraform
 complete -o nospace -C terraform tf
+complete -o nospace -C vault vault
+
+## -- ZSH completion style
+autoload -Uz compinit
+compinit -i
+# -
+compdef _vagrant v
+# compdef _kubectl k
+compdef _kubectl kubecolor
+compdef k=kubectl
+compdef g=git
+compdef tf=terraform
 
 
 # ============================================
@@ -286,11 +297,6 @@ fi
 source ~/.zsh.d/themes/noxis.zsh-theme
 
 
-# ============================================
-## ALIASES -----------------------------------
-# ============================================
-unalias -m '*'
-test -e ~/.bash_aliases && source ~/.bash_aliases || true
 
 ##
 # Pour remapé ctrl+q ou s, il faut supprimer l'mappage des touche
@@ -341,3 +347,6 @@ zstyle ':vcs_info:git*' actionformats "%F{011}  %F{015}%b %F{red}%m%u%c%f"
 ##
 test -e ~/.local/zshrc && source ~/.local/zshrc || true
 
+
+# FIXME  Goenv ne devrait pas faire ça ...
+export PATH=$HOME/.go/1.24.2/bin:$PATH
