@@ -5,9 +5,9 @@
 # =====================================
 ## INFORMATIONS -----------------------
 # =====================================
-# Author: Henry Stéphane
+# Author: [:VIM_EVAL:]$FULLNAME[:END_EVAL:]
 # Create date: [:VIM_EVAL:]strftime('%Y/%m/%d - %H:%M')[:END_EVAL:]
-# Copyright: (C) [:VIM_EVAL:]strftime('%Y')[:END_EVAL:] Stéphane Henry
+# Copyright: (C) [:VIM_EVAL:]strftime('%Y')[:END_EVAL:] [:VIM_EVAL:]$COPYRIGHT[:END_EVAL:]
 # Describle:
 #
 #
@@ -95,9 +95,7 @@ def main(args):
 
 if __name__ == "__main__":
     ## Traitement des arguments:
-    parser = argparse.ArgumentParser(
-        description="This is a script of Spartiat AAHHAHAHAHH!"
-    )
+    parser = argparse.ArgumentParser(description="This is a script of Spartiat AAHHAHAHAHH!")
 
     parser.add_argument("-d", "--debug", action="store_true", help="Active debug mode.")
 

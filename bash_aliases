@@ -187,6 +187,7 @@ alias vault-oidc="vault login --method=oidc"
 
 ## Teraform
 alias tf="terraform"
-alias tfc="terraform-docs markdown --output-file README.md"
+alias tfi="terraform init -upgrade"
+alias tfd="terraform-docs markdown --output-file README.md"
 alias tfp="clear; terraform plan -lock=false"
 alias tfa="clear; terraform apply"
