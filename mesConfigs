@@ -173,6 +173,18 @@ function build_autocompletion {
 		stern --completion bash > "${HOME}/.bash_completion.d/stern"
 	fi
 	##
+	if which trivy &>/dev/null; then
+		echo "  trivy..."
+		trivy completion zsh > "${HOME}/.zsh.d/completion/_trivy"
+		trivy completion bash > "${HOME}/.bash_completion.d/trivy"
+	fi
+	##
+	if which k9s &>/dev/null; then
+		echo "  k9s..."
+		k9s completion zsh > "${HOME}/.zsh.d/completion/_k9s"
+		k9s completion bash > "${HOME}/.bash_completion.d/k9s"
+	fi
+	##
 	if which vagrant &>/dev/null; then
 		echo "  vagrant..."
 		vagrant_version=$(vagrant --version | grep -Po  "\d+\.\d+\.\d+")

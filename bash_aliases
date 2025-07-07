@@ -73,6 +73,7 @@ alias vi='vim'
 alias fixrights="find . -type d -exec chmod 750 '{}' \; ; find . -type f -exec chmod 640 '{}' \;"
 alias weather='curl -s http://wttr.in/paris | head -n -2'
 alias meteo="weather"
+alias b64="base64"
 
 
 # ==================================================
@@ -161,6 +162,7 @@ alias kgd="kubecolor get deployments -o wide"
 alias kgds="kubecolor get daemonset -o wide"
 alias kge="kubecolor get events --sort-by='.metadata.creationTimestamp'"
 alias kgi="kubecolor get ingress -o wide"
+alias kgj="kubecolor get job"
 alias kgn="kubecolor get nodes -o wide"
 alias kgnp="kubecolor get networkpolicies"
 alias kgns="kubecolor get namespaces"

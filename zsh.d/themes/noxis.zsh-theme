@@ -44,7 +44,7 @@ function docker_context {
 	fi
 	[[ -n "${docker}" ]] || return
 	[[ "${docker}" == "null" ]] && return 0
-	echo "%F{011} D %F{015}${docker}"
+	echo "%F{011}  %F{015}${docker}"
 }
 
 function kubernetes_context {
