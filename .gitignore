@@ -11,18 +11,23 @@ zsh.d/cache
 bash_completion.d/argocd
 bash_completion.d/cvs
 bash_completion.d/helm
+bash_completion.d/k9s
 bash_completion.d/kubectl
 bash_completion.d/kubescape
 bash_completion.d/pipx
 bash_completion.d/stern
+bash_completion.d/trivy
 bash_completion.d/vagrant
+#
 zsh.d/completion/_argocd
 zsh.d/completion/_cvs
 zsh.d/completion/_helm
+zsh.d/completion/_k9s
 zsh.d/completion/_kubectl
 zsh.d/completion/_kubescape
 zsh.d/completion/_pipx
 zsh.d/completion/_stern
+zsh.d/completion/_trivy
 zsh.d/completion/_vagrant
 
 ## Local script for personal overwrite :
