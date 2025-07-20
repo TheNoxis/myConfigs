@@ -30,7 +30,7 @@ export_alias4() {
 }
 
 use_novops() {
-# TODO
+# TODO use_novops: add arguments
 # local environement=$1
 # local configFile=$2
 	if test -f ./.novops.yml; then

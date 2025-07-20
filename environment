@@ -72,6 +72,28 @@ export TZ="Europe/Paris"
 # des textes longs (sur plusieurs pages écran) par des commandes telles que man
 export PAGER='less'
 export LESS='FRX'
+## MANUAL aka man
+export GROFF_NO_SGR=1 # For Konsole and Gnome-terminal
+export LESS_TERMCAP_mb=$(tput bold; tput setaf 2)
+export LESS_TERMCAP_md=$(tput bold; tput setaf 1)
+export LESS_TERMCAP_me=$(tput sgr0)
+export LESS_TERMCAP_so=$(tput bold; tput setaf 3; tput setab 4) # yellow on blue
+export LESS_TERMCAP_se=$(tput rmso; tput sgr0)
+export LESS_TERMCAP_us=$(tput smul; tput bold; tput setaf 2)
+export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)
+export LESS_TERMCAP_mr=$(tput rev)
+export LESS_TERMCAP_mh=$(tput dim)
+export LESS_TERMCAP_ZN=$(tput ssubm)
+export LESS_TERMCAP_ZV=$(tput rsubm)
+export LESS_TERMCAP_ZO=$(tput ssupm)
+export LESS_TERMCAP_ZW=$(tput rsupm)
+# tput setaf X
+# 1) red
+# 2) green
+# 3) yellow
+# 4) blue
+# 7) white
+
 # EDITOR -- Le nom de l'éditeur de texte préféré pour les utilisateurs.
 # Il sera utilisé par des commandes telles que mutt ou sudoedit
 export EDITOR='vim'
@@ -97,6 +119,8 @@ export LS_COLORS="${LS_COLORS_SAVE}:*tmp=01;31:*.md=01;35:*.cfg=01;96"
 # COLUMNS	80	Le nombre de colonnes sur la fenêtre de console. Essayez d'ajuster cette variable si les lignes semblent ne pas être coupées correctement sur la console.
 # LINES	25	Le nombre de lignes sur la fenêtre de console. Essayez d'ajuster cette variable si vous obtenez des résultats étranges lorsque vous faites défiler le texte.
 # http_proxy	http://user:passwd@proxy:port/	La variable pour utiliser un proxy, marche aussi avec HTTP_PROXY, ftp_proxy et FTP_proxy .
+
+
 
 
 # ==========================================

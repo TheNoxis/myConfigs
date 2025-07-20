@@ -1,18 +1,4 @@
 # vim: ft=bash
-
-man() {
-	env \
-		LESS_TERMCAP_mb=$(printf "\e[1;31m") \
-		LESS_TERMCAP_md=$(printf "\e[1;31m") \
-		LESS_TERMCAP_me=$(printf "\e[0m") \
-		LESS_TERMCAP_se=$(printf "\e[0m") \
-		LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
-		LESS_TERMCAP_ue=$(printf "\e[0m") \
-		LESS_TERMCAP_us=$(printf "\e[1;32m") \
-		man "$@"
-}
-
-
 # ==================================================
 ## ALIASES -----------------------------------------
 # ==================================================
@@ -152,9 +138,10 @@ alias dcst="docker compose stats -a --no-stream"
 alias k="kubecolor"
 alias kns="kubens"
 alias kctx="kubectx"
-#
+alias kil="kubecolor image list"
 alias kapi="kubecolor api-resources --sort-by=name"
 alias kcani="kubecolor auth can-i -list"
+# GET
 alias kgcm="kubecolor get configmap -o wide"
 alias kgcrb="kubecolor get ClusterRoleBinding -o wide"
 alias kgcrd="kubecolor get crd -o wide"
@@ -178,10 +165,9 @@ alias kgrb="kubecolor get rolebinding -o wide"
 alias kgs="kubecolor get rc,services -o wide"
 alias kgsa="kubecolor get serviceaccounts"
 alias kgsfs="kubecolor get statefulsets -o wide"
-alias kil="kubecolor image list"
 alias kgvs="kubecolor get volumesnapshots"
 alias kgvsc="kubecolor get volumesnapshotcontents"
-##
+## DESCRIBE
 alias kdcm="kubecolor describe configmap"
 alias kdcrb="kubecolor describe ClusterRoleBinding"
 alias kdcrd="kubecolor describe crd"
@@ -206,7 +192,31 @@ alias kdsa="kubecolor describe serviceaccounts"
 alias kdsfs="kubecolor describe statefulsets"
 alias kdvs="kubecolor describe volumesnapshots"
 alias kdvsc="kubecolor describe volumesnapshotcontents"
-
+## EDIT
+alias kecm="kubecolor edit configmap"
+alias kecrb="kubecolor edit ClusterRoleBinding"
+alias kecrd="kubecolor edit crd"
+alias kecrd="kubecolor edit crd"
+alias kecsr="kubecolor edit csr"
+alias ked="kubecolor edit deployments"
+alias keds="kubecolor edit daemonset"
+alias kee="kubecolor edit events --sort-by='.lastTimestamp'"
+alias kei="kubecolor edit ingress"
+alias keir="kubecolor edit ingressRoute"
+alias kej="kubecolor edit job"
+alias ken="kubecolor edit nodes"
+alias kenp="kubecolor edit networkpolicies"
+alias kens="kubecolor edit namespaces"
+alias kep="kubecolor edit pods"
+alias kepv="kubecolor edit pv"
+alias kepvc="kubecolor edit pvc"
+alias ker="kubecolor edit role"
+alias kerb="kubecolor edit rolebinding"
+alias kes="kubecolor edit rc,services"
+alias kesa="kubecolor edit serviceaccounts"
+alias kesfs="kubecolor edit statefulsets"
+alias kevs="kubecolor edit volumesnapshots"
+alias kevsc="kubecolor edit volumesnapshotcontents"
 
 ## argocd
 alias argocd-klogin='argocd login --grpc-web --name tpkube --username admin --insecure --password $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo) $(argocd context | awk "/^*/ {print \$3}")'
