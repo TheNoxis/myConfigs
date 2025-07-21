@@ -230,6 +230,7 @@ alias v="vagrant"
 alias vault-oidc="vault login --method=oidc"
 
 ## Teraform
+alias tfdebug='export TF_LOG=$([ "$TF_LOG" = "INFO" ] && echo "DEBUG" || echo "INFO"); echo "> Terraform log: $TF_LOG"'
 alias tf="terraform"
 alias tfi="terraform init -upgrade"
 alias tfd="terraform-docs markdown --output-file README.md"
