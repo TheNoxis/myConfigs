@@ -18,19 +18,26 @@ ARG TOTO="toto"
 ENV TATA="tata"
 
 ## --
-RUN apt update && apt-get install --yes \
-    bison \
-    git-core \
-    libasound2-dev \
-    libportaudio-dev \
-    python-dev \
-    python-pyaudio \
-    tree
+RUN apt-get update \
+    && apt-get --no-install-recommends install --yes \
+        bison \
+        git-core \
+        libasound2-dev \
+        libportaudio-dev \
+        python-dev \
+        python-pyaudio \
+        tree \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR "/opt"
 RUN git clone https://xxx.git jasper
 
+RUN addgroup -S jasper \
+    && adduser -S jasper -G jasper
+USER jasper
+
 WORKDIR "/opt/jasper"
-RUN pip install -r -nocache jasper/client/requirements.txt
+RUN pip install -r --no-cache-dir jasper/client/requirements.txt
 
 ENTRYPOINT ["/opt/jasper/bin/jasper"]
