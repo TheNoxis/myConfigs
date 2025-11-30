@@ -138,9 +138,21 @@ alias dcst="docker compose stats -a --no-stream"
 alias k="kubecolor"
 alias kns="kubens"
 alias kctx="kubectx"
+#
 alias kil="kubecolor image list"
 alias kapi="kubecolor api-resources --sort-by=name"
 alias kcani="kubecolor auth can-i -list"
+alias kwhoami="kubecolor auth can-i --list --namespace $(kubectl config view --minify -o 'jsonpath={..namespace}')"
+alias kexec="kubecolor exec -it"
+alias kport="kubecolor port-forward"
+#
+alias stern="kubectl stern --color always"
+alias klogs="kubecolor logs -f"
+alias klogsp="kubecolor logs -f -p"
+#
+alias ktop="kubectl ktop"
+alias ktn="kubecolor top pods --sort-by=cpu"
+alias ktp="kubecolor top nodes --sort-by=cpu"
 # LIST with GET -------------------
 alias kgcm="kubecolor get configmap -o yaml"
 alias kgcrb="kubecolor get ClusterRoleBinding -o yaml"
@@ -259,8 +271,8 @@ alias vault-oidc="vault login --method=oidc"
 
 ## Teraform
 alias tfdebug='export TF_LOG=$([ "$TF_LOG" = "INFO" ] && echo "DEBUG" || echo ""); echo "> Terraform log: $TF_LOG"'
-alias tfdebug_core='export TF_LOG_CORE=$([ "$TF_LOG_CORE" = "INFO" ] && echo "DEBUG" || echo ""); echo "> Terraform log: $TF_LOG"'
-alias tfdebug_provider='export TF_LOG_PROVIDER=$([ "$TF_LOG_PROVIDER" = "INFO" ] && echo "DEBUG" || echo ""); echo "> Terraform log: $TF_LOG"'
+alias tfdebug_core='export TF_LOG_CORE=$([ "$TF_LOG_CORE" = "INFO" ] && echo "DEBUG" || echo ""); echo "> Terraform log: $TF_LOG_CORE"'
+alias tfdebug_provider='export TF_LOG_PROVIDER=$([ "$TF_LOG_PROVIDER" = "INFO" ] && echo "DEBUG" || echo ""); echo "> Terraform log: $TF_LOG_PROVIDER"'
 alias tf="terraform"
 alias tfi="terraform init -upgrade"
 alias tfd="terraform-docs markdown --output-file README.md"

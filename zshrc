@@ -51,7 +51,7 @@ setopt extendedglob
 # Correction orthographique des commande:
 # Uniquement pour les commandes:
 setopt correct
-# Pour les commandes et les arguments:
+# Correction orthographique pour toute la ligne:
 #setopt correctall
 
 # Changement de repertoire sans faire 'cd':
@@ -61,7 +61,7 @@ setopt correct
 setopt always_to_end
 
 # For autocompletion of command line switches for aliases, add the following to:
-setopt completealiases
+# setopt completealiases ## IMPORTANT: peut generer des bugs avec certaines aliases comme k=kubectl
 
 # Pas de notification d'un process en tache de fond
 unsetopt notify
@@ -211,14 +211,10 @@ zstyle ':completion:*:*:docker:*' option-stacking yes
 ## Utilisation de la completion ZSH:
 fpath=(~/.zsh.d/completion $fpath)
 
-# autoload -Uz compinit
-# autoload -U compinit
-# compinit
-
-
-
 ## -- Bash completion style
-autoload -U +X bashcompinit && bashcompinit
+autoload -U bashcompinit
+bashcompinit
+# autoload -U +X bashcompinit && bashcompinit
 # test -d /etc/bash_completion.d && source /etc/bash_completion.d/*
 # -
 # complete -o nospace -C <binary> <commande cible>
@@ -228,16 +224,22 @@ complete -o nospace -C terraform terraform
 complete -o nospace -C terraform tf
 complete -o nospace -C vault vault
 
+
 ## -- ZSH completion style
-autoload -Uz compinit
-compinit -i
+autoload -U compinit
+compinit
+# autoload -Uz compinit && compinit -i
+# autoload -U compinit && compinit
 # -
 compdef _vagrant v
-# compdef _kubectl k
-compdef _kubectl kubecolor
-compdef k=kubectl
+
 compdef g=git
 compdef tf=terraform
+
+compdef kubecolor=kubectl
+compdef _kubectl k
+alias m="kubecolor"
+compdef _kubectl m
 
 
 # ============================================
@@ -343,10 +345,5 @@ zstyle ':vcs_info:git*' actionformats "%F{011}  %F{015}%b %F{red}%m%u%c%f"
 
 #add-zsh-hook precmd vcs_info
 
-
 ##
 test -e ~/.local/zshrc && source ~/.local/zshrc || true
-
-
-# FIXME  Goenv ne devrait pas faire ça ...
-export PATH=$HOME/.go/1.24.2/bin:$PATH

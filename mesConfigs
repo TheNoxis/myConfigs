@@ -136,53 +136,32 @@ function set_link() {
 
 function build_autocompletion {
 	echo "> Generate autocompletion"
-	##
-	if which cvs.py &>/dev/null; then
-		echo "  cvs..."
-		register-python-argcomplete -s zsh cvs.py > "${HOME}/.zsh.d/completion/_cvs"
-		register-python-argcomplete -s bash cvs.py > "${HOME}/.bash_completion.d/cvs"
-	fi
-	##
-	if which kubectl &>/dev/null; then
-		echo "  kubectl..."
-		kubectl completion zsh > "${HOME}/.zsh.d/completion/_kubectl"
-		kubectl completion bash > "${HOME}/.bash_completion.d/kubectl"
-	fi
-	##
-	if which helm &>/dev/null; then
-		echo "  helm..."
-		helm completion zsh > "${HOME}/.zsh.d/completion/_helm"
-		helm completion bash > "${HOME}/.bash_completion.d/helm"
-	fi
-	##
-	if which argocd &>/dev/null; then
-		echo "  argocd..."
-		argocd completion zsh > "${HOME}/.zsh.d/completion/_argocd"
-		argocd completion bash > "${HOME}/.bash_completion.d/argocd"
-	fi
-	##
-	if which kubescape &>/dev/null; then
-		echo "  kubescape..."
-		kubescape completion zsh  > "${HOME}/.zsh.d/completion/_kubescape"
-		kubescape completion bash > "${HOME}/.bash_completion.d/kubescape"
-	fi
+
+	## Completion des binaires courants
+	BIN_LIST=(kubectl helm argocd kubescape trivy k9s istioctl)
+	for binComp in "${BIN_LIST[@]}"; do
+		if which ${binComp} &>/dev/null; then
+			echo "  ${binComp} ..."
+			${binComp} completion zsh > "${HOME}/.zsh.d/completion/_${binComp}"
+			${binComp} completion bash > "${HOME}/.bash_completion.d/${binComp}"
+		fi
+	done
+
+	## Completion des script pythons utilisant argcomplete
+	BIN_LIST=(pipx cvs.py)
+	for binComp in "${BIN_LIST[@]}"; do
+		if which ${binComp} &>/dev/null; then
+			echo "  ${binComp} ..."
+			register-python-argcomplete --no-defaults --shell zsh ${binComp}  > "${HOME}/.zsh.d/completion/_${binComp}"
+			register-python-argcomplete --no-defaults --shell bash ${binComp} > "${HOME}/.bash_completion.d/${binComp}"
+		fi
+	done
+
 	##
 	if which stern &>/dev/null; then
 		echo "  stern..."
 		stern --completion zsh  > "${HOME}/.zsh.d/completion/_stern"
 		stern --completion bash > "${HOME}/.bash_completion.d/stern"
-	fi
-	##
-	if which trivy &>/dev/null; then
-		echo "  trivy..."
-		trivy completion zsh > "${HOME}/.zsh.d/completion/_trivy"
-		trivy completion bash > "${HOME}/.bash_completion.d/trivy"
-	fi
-	##
-	if which k9s &>/dev/null; then
-		echo "  k9s..."
-		k9s completion zsh > "${HOME}/.zsh.d/completion/_k9s"
-		k9s completion bash > "${HOME}/.bash_completion.d/k9s"
 	fi
 	##
 	if which vagrant &>/dev/null; then
@@ -191,12 +170,6 @@ function build_autocompletion {
 		vagrant_path="/opt/vagrant/embedded/gems/gems/vagrant-${vagrant_version}/contrib/"
 		cp "${vagrant_path}/zsh/_vagrant" "${HOME}/.zsh.d/completion/_vagrant"
 		cp "${vagrant_path}/bash/completion.sh" "${HOME}/.bash_completion.d/vagrant"
-	fi
-	##
-	if which pipx &>/dev/null; then
-		echo "  pipx..."
-		register-python-argcomplete --no-defaults --shell zsh pipx > "${HOME}/.zsh.d/completion/_pipx"
-		register-python-argcomplete --no-defaults --shell bash pipx > "${HOME}/.bash_completion.d/pipx"
 	fi
 }
 

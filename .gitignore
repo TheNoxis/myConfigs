@@ -18,6 +18,7 @@ bash_completion.d/pipx
 bash_completion.d/stern
 bash_completion.d/trivy
 bash_completion.d/vagrant
+bash_completion.d/istioctl
 #
 zsh.d/completion/_argocd
 zsh.d/completion/_cvs
@@ -29,6 +30,7 @@ zsh.d/completion/_pipx
 zsh.d/completion/_stern
 zsh.d/completion/_trivy
 zsh.d/completion/_vagrant
+zsh.d/completion/_istioctl
 
 ## Local script for personal overwrite :
 mesConfigs.local.sh
