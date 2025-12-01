@@ -238,8 +238,6 @@ compdef tf=terraform
 
 compdef kubecolor=kubectl
 compdef _kubectl k
-alias m="kubecolor"
-compdef _kubectl m
 
 
 # ============================================
