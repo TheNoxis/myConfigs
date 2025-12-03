@@ -100,6 +100,7 @@ function set_link() {
 		backupAndLink "$REAL_PATH/direnvrc" "$HOME/.direnvrc"
 		backupAndLink "$REAL_PATH/jq" "$HOME/.jq"
 		backupAndLink "$REAL_PATH/k9s" "$HOME/.config/k9s"
+		backupAndLink "$REAL_PATH/kubecolor.yaml" $HOME/.kube/color.yaml
 		# ZSH:
 		backupAndLink "$REAL_PATH/zsh.d" "$HOME/.zsh.d"
 		$DRYRUN || chmod g-w "$HOME/.zsh.d"
@@ -138,7 +139,7 @@ function build_autocompletion {
 	echo "> Generate autocompletion"
 
 	## Completion des binaires courants
-	BIN_LIST=(kubectl helm argocd kubescape trivy k9s istioctl cilium hubble calicoctl velero flux fluxcd gh ghq)
+	BIN_LIST=(kubectl helm argocd kubescape trivy k9s istioctl cilium hubble velero flux fluxcd gh ghq)
 	for binComp in "${BIN_LIST[@]}"; do
 		if which ${binComp} &>/dev/null; then
 			echo "  ${binComp} ..."

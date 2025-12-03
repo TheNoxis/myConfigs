@@ -1,0 +1,17 @@
+# https://kubecolor.github.io/reference/config/
+# yaml-language-server: $schema=https://github.com/kubecolor/kubecolor/raw/main/config-schema.json
+preset: dark
+paging: never
+theme:
+  base:
+    # general color for when things are informational
+    info: white
+    # key: [red, yellow]
+  data:
+    "null": gray:italic
+  table:
+    # used on table headers
+    header: "fg=green:bold:underline"
+    # columns: [blue, white]
+  # rollout:
+    # restarted: yellow

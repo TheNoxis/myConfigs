@@ -282,3 +282,6 @@ alias tff="terraform fmt"
 alias tfv="terraform validate"
 alias tfl="tflint"
 alias tfs="trivy fs --scanners vuln,misconfig,secret,license ."
+
+# OpenShift CLI
+alias oc="kubecolor"
