@@ -1,2 +1,0 @@
-#compdef kubectl
-compdef _kubectl k
