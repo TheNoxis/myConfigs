@@ -12,6 +12,9 @@ if [ -d "$HOME/.local/bin" ]; then
 fi
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
+if [ -d "$HOME/.asdf/shims" ]; then
+	export PATH="$HOME/.asdf/shims:$PATH"
+fi
 
 # ==========================================
 ## -- TERM ---------------------------------
@@ -184,3 +187,6 @@ export SYSTEMD_PAGER=''
 #export LIBVIRT_DEFAULT_URI='qemu+ssh://<login>@<hostname>/system'
 export LIBVIRT_DEFAULT_URI='qemu:///system'
 export VAGRANT_DEFAULT_PROVIDER='libvirt'
+
+# ASDF:
+# export ASDF_DATA_DIR="$HOME/.local/asdf"

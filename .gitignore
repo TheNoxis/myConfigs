@@ -28,6 +28,7 @@ zsh.d/cache
 **/*completion*/*fluxcd
 **/*completion*/*gh
 **/*completion*/*ghq
+**/*completion*/*asdf
 
 ## Local script for personal overwrite :
 mesConfigs.local.sh

@@ -151,8 +151,8 @@ alias klogs="kubecolor logs -f"
 alias klogsp="kubecolor logs -f -p"
 #
 alias ktop="kubectl ktop"
-alias ktn="kubecolor top pods --sort-by=cpu"
-alias ktp="kubecolor top nodes --sort-by=cpu"
+alias ktp="kubecolor top pods"
+alias ktn="kubecolor top nodes"
 # LIST with GET -------------------
 alias kgcm="kubecolor get configmap -o yaml"
 alias kgcrb="kubecolor get ClusterRoleBinding -o yaml"
@@ -179,6 +179,8 @@ alias kgsa="kubecolor get serviceaccounts -o yaml"
 alias kgsfs="kubecolor get statefulsets -o yaml"
 alias kgvs="kubecolor get volumesnapshots -o yaml"
 alias kgvsc="kubecolor get volumesnapshotcontents -o yaml"
+alias kgrs="kubecolor get replicasets -o yaml"
+alias kgrc="kubecolor get replicationcontrollers -o yaml"
 # GET -------------------------------
 alias klcm="kubecolor get configmap -o wide"
 alias klcrb="kubecolor get ClusterRoleBinding -o wide"
@@ -206,6 +208,8 @@ alias klsa="kubecolor get serviceaccounts"
 alias klsfs="kubecolor get statefulsets -o wide"
 alias klvs="kubecolor get volumesnapshots"
 alias klvsc="kubecolor get volumesnapshotcontents"
+alias klrs="kubecolor get replicasets"
+alias klrc="kubecolor get replicationcontrollers"
 ## DESCRIBE -----------------------------
 alias kdcm="kubecolor describe configmap"
 alias kdcrb="kubecolor describe ClusterRoleBinding"
@@ -232,6 +236,8 @@ alias kdsa="kubecolor describe serviceaccounts"
 alias kdsfs="kubecolor describe statefulsets"
 alias kdvs="kubecolor describe volumesnapshots"
 alias kdvsc="kubecolor describe volumesnapshotcontents"
+alias kdrs="kubecolor describe replicasets"
+alias kdrc="kubecolor describe replicationcontrollers"
 ## EDIT ------------------------------------
 alias kecm="kubecolor edit configmap"
 alias kecrb="kubecolor edit ClusterRoleBinding"
@@ -257,6 +263,8 @@ alias kesa="kubecolor edit serviceaccounts"
 alias kesfs="kubecolor edit statefulsets"
 alias kevs="kubecolor edit volumesnapshots"
 alias kevsc="kubecolor edit volumesnapshotcontents"
+alias kers="kubecolor edit replicasets"
+alias kerc="kubecolor edit replicationcontrollers"
 
 ## argocd
 alias argocd-klogin='argocd login --grpc-web --name tpkube --username admin --insecure --password $(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo) $(argocd context | awk "/^*/ {print \$3}")'
@@ -270,9 +278,9 @@ alias v="vagrant"
 alias vault-oidc="vault login --method=oidc"
 
 ## Teraform
-alias tfdebug='export TF_LOG=$([ "$TF_LOG" = "INFO" ] && echo "DEBUG" || echo ""); echo "> Terraform log: $TF_LOG"'
-alias tfdebug_core='export TF_LOG_CORE=$([ "$TF_LOG_CORE" = "INFO" ] && echo "DEBUG" || echo ""); echo "> Terraform log: $TF_LOG_CORE"'
-alias tfdebug_provider='export TF_LOG_PROVIDER=$([ "$TF_LOG_PROVIDER" = "INFO" ] && echo "DEBUG" || echo ""); echo "> Terraform log: $TF_LOG_PROVIDER"'
+alias tfdebug='export TF_LOG=$([ "$TF_LOG" != "DEBUG" ] && echo "DEBUG" || echo ""); echo "> Terraform log: $TF_LOG"'
+alias tfdebug_core='export TF_LOG_CORE=$([ "$TF_LOG_CORE" != "DEBUG" ] && echo "DEBUG" || echo ""); echo "> Terraform log: $TF_LOG_CORE"'
+alias tfdebug_provider='export TF_LOG_PROVIDER=$([ "$TF_LOG_PROVIDER" != "DEBUG" ] && echo "DEBUG" || echo ""); echo "> Terraform log: $TF_LOG_PROVIDER"'
 alias tf="terraform"
 alias tfi="terraform init -upgrade"
 alias tfd="terraform-docs markdown --output-file README.md"
