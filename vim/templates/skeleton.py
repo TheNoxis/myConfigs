@@ -131,6 +131,6 @@ if __name__ == "__main__":
     r = main(args)
 
     ## Code retour
-    if r != True or r != 0:
-        sys.exit(1)
-    sys.exit(0)
+    if r or r == 0:
+        sys.exit(0)
+    sys.exit(1)

@@ -38,7 +38,7 @@ use_novops() {
 		if has novops; then
 			#echo "Loading .novops.yml..."
 			set -a
-			. <(novops load --skip-tty-check --skip-workdir-check -f dotenv)
+			. <(novops load --skip-tty-check --skip-workdir-check -f dotenv -c <(envsubst < .novops.yml))
 			set +a
 		else
 			echo "use_novops: Command novops not found!"
