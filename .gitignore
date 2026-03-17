@@ -32,3 +32,6 @@ zsh.d/cache
 
 ## Local script for personal overwrite :
 mesConfigs.local.sh
+
+##
+*/tmp

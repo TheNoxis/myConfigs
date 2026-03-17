@@ -182,6 +182,7 @@ alias kgvsc="kubecolor get volumesnapshotcontents -o yaml"
 alias kgrs="kubecolor get replicasets -o yaml"
 alias kgrc="kubecolor get replicationcontrollers -o yaml"
 alias kgcj="kubecolor get cronjob -o yaml"
+alias kgbun="kubecolor get bundle -o yaml"
 # GET -------------------------------
 alias klcm="kubecolor get configmap -o wide"
 alias klcrb="kubecolor get ClusterRoleBinding -o wide"
@@ -212,6 +213,7 @@ alias klvsc="kubecolor get volumesnapshotcontents"
 alias klrs="kubecolor get replicasets"
 alias klrc="kubecolor get replicationcontrollers"
 alias klgcj="kubecolor get cronjob -o wide"
+alias klbun="kubecolor get bundle -o wide"
 ## DESCRIBE -----------------------------
 alias kdcm="kubecolor describe configmap"
 alias kdcrb="kubecolor describe ClusterRoleBinding"
@@ -241,6 +243,7 @@ alias kdvsc="kubecolor describe volumesnapshotcontents"
 alias kdrs="kubecolor describe replicasets"
 alias kdrc="kubecolor describe replicationcontrollers"
 alias kdcj="kubecolor describe cronjob"
+alias kdbun="kubecolor describe bundle"
 ## EDIT ------------------------------------
 alias kecm="kubecolor edit configmap"
 alias kecrb="kubecolor edit ClusterRoleBinding"
@@ -269,6 +272,7 @@ alias kevsc="kubecolor edit volumesnapshotcontents"
 alias kers="kubecolor edit replicasets"
 alias kerc="kubecolor edit replicationcontrollers"
 alias kecj="kubecolor edit cronjob"
+alias kebun="kubecolor edit bundle"
 
 
 ## argocd
