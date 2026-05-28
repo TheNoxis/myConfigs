@@ -2,7 +2,7 @@
 [alias]
 # out = cherry --abbrev --verbose
 # out = log origin/master...
-	b = branch
+	b = branch --sort=-committerdate -vv
 	ci = commit
 	co = checkout
 	glog  = log --graph --all --decorate --topo-order -30
@@ -44,6 +44,8 @@
 	pretty = format: %C(auto)%h%C(reset) | %C(green)%cd%C(reset) | %C(cyan)%<(10)%aN%C(reset) | %s %C(auto)%d
 [diff]
 	tool = vimdiff
+[diff "ignorelines"]
+    textconv = ~/bin/git_filter_diff.sh
 [difftool]
 	prompt = false
 [status]
@@ -69,3 +71,8 @@
 	autocorrect = 1
 [rebase]
 	autosquash = true
+[fetch]
+	# met à jour les refs distantes et supprime les refs remote-tracking obsolètes
+	prune = true
+	# Idem pour lestages
+	pruneTags = true
