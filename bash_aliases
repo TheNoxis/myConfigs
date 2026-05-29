@@ -219,7 +219,7 @@ alias klvs="kubecolor get volumesnapshots"
 alias klvsc="kubecolor get volumesnapshotcontents"
 alias klrs="kubecolor get replicasets"
 alias klrc="kubecolor get replicationcontrollers"
-alias klgcj="kubecolor get cronjob -o wide"
+alias klcj="kubecolor get cronjob -o wide"
 alias klb="kubecolor get bundle -o wide"
 alias klc="kubecolor get cluster -o wide"
 ## DESCRIBE -----------------------------
