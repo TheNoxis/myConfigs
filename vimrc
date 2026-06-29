@@ -123,14 +123,29 @@ set foldlevel=10		" Niveau min du fold ouvert au lancement
 " -----------------------------------------------
 " DESC: Gestion de template
 "       http://vim.wikia.com/wiki/Use_eval_to_create_dynamic_templates
+function! LoadTemplate()
+    let l:file = expand('%:t')
+    let l:tpl  = expand('$HOME/.vim/templates/' . l:file . '.tpl')
+
+    " Pour les fichiers cachés : .gitignore -> gitignore.tpl
+    if !filereadable(l:tpl) && l:file =~# '^\.'
+        let l:tpl = expand('$HOME/.vim/templates/' . l:file[1:] . '.tpl')
+    endif
+
+    " Template basé sur l'extension : foo.py -> skeleton.py
+    if !filereadable(l:tpl) && !empty(expand('%:e'))
+        let l:tpl = expand('$HOME/.vim/templates/skeleton.' . expand('%:e'))
+    endif
+
+    if filereadable(l:tpl)
+        execute 'silent 0r ' . fnameescape(l:tpl)
+    endif
+endfunction
+
 augroup templates
-	au!
-	" read in template files
-	autocmd BufNewFile *.*      silent! execute '0r $HOME/.vim/templates/skeleton.'.expand("<afile>:e")
-	autocmd BufNewFile Makefile silent! execute '0r $HOME/.vim/templates/Makefile.tpl'
-	autocmd BufNewFile Dockerfile silent! execute '0r $HOME/.vim/templates/Dockerfile.tpl'
-	" parse special text in the templates after the read
-	autocmd BufNewFile * %substitute#\[:VIM_EVAL:\]\(.\{-\}\)\[:END_EVAL:\]#\=eval(submatch(1))#ge
+    au!
+    autocmd BufNewFile * call LoadTemplate()
+    autocmd BufNewFile * %s#\[:VIM_EVAL:\]\(.\{-\}\)\[:END_EVAL:\]#\=eval(submatch(1))#ge
 augroup END
 
 
