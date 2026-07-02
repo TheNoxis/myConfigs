@@ -316,4 +316,4 @@ alias tfl="tflint"
 alias tfs="trivy fs --scanners vuln,misconfig,secret,license ."
 
 # OpenShift CLI
-alias oc="kubecolor"
+alias oc="env KUBECOLOR_KUBECTL=oc kubecolor"
