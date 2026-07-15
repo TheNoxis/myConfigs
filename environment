@@ -190,3 +190,6 @@ export VAGRANT_DEFAULT_PROVIDER='libvirt'
 
 # ASDF:
 # export ASDF_DATA_DIR="$HOME/.local/asdf"
+
+# Permet de définir la registrie/image pour les aliases kcurl et kdig
+# export K8S_IMAGE_TOOLS="nicolaka/netshoot"

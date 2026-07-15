@@ -9,26 +9,31 @@ zsh.d/cache
 
 ## Generated files by mesConfigs script:
 **/*completion*/*argocd
+**/*completion*/*asdf
+**/*completion*/*calicoctl
+**/*completion*/*cilium
 **/*completion*/*cvs
 **/*completion*/*cvs.py
-**/*completion*/*helm
-**/*completion*/*k9s
-**/*completion*/*kubectl
-**/*completion*/*kubescape
-**/*completion*/*pipx
-**/*completion*/*stern
-**/*completion*/*trivy
-**/*completion*/*vagrant
-**/*completion*/*istioctl
-**/*completion*/*cilium
-**/*completion*/*calicoctl
-**/*completion*/*hubble
-**/*completion*/*velero
+**/*completion*/*docker
 **/*completion*/*flux
 **/*completion*/*fluxcd
 **/*completion*/*gh
 **/*completion*/*ghq
-**/*completion*/*asdf
+**/*completion*/*helm
+**/*completion*/*helm
+**/*completion*/*hubble
+**/*completion*/*istioctl
+**/*completion*/*jira
+**/*completion*/*k9s
+**/*completion*/*kubectl
+**/*completion*/*kubescape
+**/*completion*/*oc
+**/*completion*/*pipx
+**/*completion*/*podman
+**/*completion*/*stern
+**/*completion*/*trivy
+**/*completion*/*vagrant
+**/*completion*/*velero
 
 ## Local script for personal overwrite :
 mesConfigs.local.sh
