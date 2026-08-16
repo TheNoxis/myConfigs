@@ -1,0 +1,21 @@
+#! /usr/bin/env bash
+#
+# Source:
+# https://lloydrochester.com/post/unix/wsl-pbcopy-pbpaste/
+# https://ostechnix.com/how-to-use-pbcopy-and-pbpaste-commands-on-linux/
+#
+if [ -e /proc/sys/fs/binfmt_misc/WSLInterop ]; then
+	powershell.exe Get-Clipboard | sed 's/\r$//' | sed -z '$ s/\n$//'
+	exit $0
+elif command -v xsel 2>/dev/null; then
+	xsel --clipboard --output
+	exit $?
+elif command -v xclip 2>/dev/null; then
+	xclip -selection clipboard -o
+	exit $?
+else
+	echo "Need: sudo apt install xsel" >&2
+	echo "or" >&2
+	echo "Need: sudo apt install xclip" >&2
+	exit 1
+fi
