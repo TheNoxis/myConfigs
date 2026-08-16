@@ -12,8 +12,7 @@ zsh.d/cache
 **/*completion*/*asdf
 **/*completion*/*calicoctl
 **/*completion*/*cilium
-**/*completion*/*cvs
-**/*completion*/*cvs.py
+**/*completion*/*cvss
 **/*completion*/*docker
 **/*completion*/*flux
 **/*completion*/*fluxcd
@@ -40,3 +39,11 @@ mesConfigs.local.sh
 
 ##
 */tmp
+
+## Dossier de build pipx lors de l'installation d'un package python
+src_*/build
+src_*/cvss.egg-info
+
+
+# Ruff
+.ruff_cache

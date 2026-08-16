@@ -26,9 +26,10 @@ REAL_PATH=$(dirname "$SCRIPT_PATH")
 
 function help() {
 	echo "USAGE"
-	echo "    $SCRIPT_NAME [-ch] <install|link|completion>"
+	echo "    $SCRIPT_NAME [-c] [-h] <install|link|completion|submodules|pipx>"
 	echo "OPTIONS"
 	echo "    -c : Check mode (dry-run)."
+	echo "    -h : Show this help message."
 	echo ""
 }
 
@@ -149,7 +150,7 @@ function build_autocompletion {
 	done
 
 	## Completion des script pythons utilisant argcomplete
-	BIN_LIST=(pipx cvs.py)
+	BIN_LIST=(pipx cvss)
 	for binComp in "${BIN_LIST[@]}"; do
 		if which ${binComp} &>/dev/null; then
 			echo "  ${binComp} ..."
@@ -188,6 +189,24 @@ function add_submodules {
 	done < <(grep "\[submodule" .gitmodules)
 }
 
+function install_pipx_local_packages {
+	# Nom des dossier ayant un fichier pyproject.toml contenant un script d'installation.
+	local package_paths=(src_cvss)
+
+	if ! command -v pipx &>/dev/null; then
+		echo "pipx n'est pas installé. Veuillez l'installer pour continuer."
+		return 1
+	fi
+
+	for package_dir in "${package_paths[@]}"; do
+		if [ -d "$package_dir" ]; then
+			local package_name=$(basename "$package_dir")
+			echo "Installation de $package_name..."
+			pipx install --force "$package_name/"
+		fi
+	done
+}
+
 # =====================================
 ## MAIN -------------------------------
 # =====================================
@@ -206,6 +225,7 @@ while true; do
 		"install")
 			set_link
 			build_autocompletion
+			install_pipx_local_packages
 			exit $?
 			;;
 		"link")
@@ -218,6 +238,10 @@ while true; do
 			;;
 		"submodules")
 			add_submodules
+			exit $?
+			;;
+		"pipx")
+			install_pipx_local_packages
 			exit $?
 			;;
 		*)

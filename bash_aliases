@@ -72,7 +72,7 @@ alias b64="base64"
 # alias gitst='git status .'
 # alias  hgci='hg  ci -m "Update..."'
 # alias  hgst='hg status .'
-alias cvs="$HOME/bin/cvs.py -r"
+# alias cvss="$HOME/bin/cvss -r"
 alias g="git"
 alias git-purge-branch="git fetch --prune --prune-tags && git branch --format='%(refname:short) %(upstream:track)'| awk '\$2 == \"[gone]\" {print \$1}'|xargs -r git branch -d"
 alias git-purge-branch-unmerged="git fetch --prune --prune-tags && git branch --format='%(refname:short) %(upstream:track)'| awk '\$2 == \"[gone]\" {print \$1}'|xargs -r git branch -D"

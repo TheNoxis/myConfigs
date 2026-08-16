@@ -206,7 +206,6 @@ zstyle ':completion:*:*:docker:*' option-stacking yes
 
 
 ## -- MES SCRIPTS -------------------------------------
-# compdef _gnu_generic cvs.py
 
 ## Utilisation de la completion ZSH:
 fpath=(~/.zsh.d/completion $fpath)
