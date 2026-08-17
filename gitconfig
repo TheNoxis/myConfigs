@@ -34,9 +34,6 @@
 [push]
 	default = current
 	autoSetupRemote = true
-[user]
-	name = noxis
-	email = noxis@home.lan
 [color]
 	ui = true
 [format]
@@ -67,6 +64,7 @@
 	branch = false
 [core]
 	excludesfile = ~/.gitignore
+	autocrlf = input
 [help]
 	autocorrect = 1
 [rebase]
@@ -76,3 +74,5 @@
 	prune = true
 	# Idem pour lestages
 	pruneTags = true
+[include]
+	path = ~/.local/gitconfig
