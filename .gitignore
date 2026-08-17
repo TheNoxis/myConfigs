@@ -19,7 +19,6 @@ zsh.d/cache
 **/*completion*/*gh
 **/*completion*/*ghq
 **/*completion*/*helm
-**/*completion*/*helm
 **/*completion*/*hubble
 **/*completion*/*istioctl
 **/*completion*/*jira
