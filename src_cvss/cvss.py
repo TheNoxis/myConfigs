@@ -392,10 +392,17 @@ def find_repository(path, recursif=False, filter=None):
     namePattern = [".svn", ".git", ".hg"]
     userHome = os.path.expanduser("~")
     for root, dirnames, filenames in os.walk(path, topdown=True, followlinks=False):
+        # Ne pas descendre dans les répertoires cachés sauf les dossiers VCS connus.
+        dirnames[:] = [d for d in dirnames if not d.startswith(".") or d in namePattern]
+
+        # Ne pas scanner les répertoires cachés en eux-mêmes.
+        if (root.startswith(".") and not root.startswith("./")) or root.startswith("./."):
+            continue
+
         for dirname in dirnames:
             if root == userHome:
                 continue
-            if any(ext == dirname for ext in namePattern):
+            if dirname in namePattern:
                 if filter and not filter.search(root):
                     continue
                 cvsType = dirname[1:]
@@ -408,10 +415,6 @@ def find_repository(path, recursif=False, filter=None):
 
                 cvs = Chkout(cvsType, root)
                 matches.append(cvs)
-                # time.sleep(1)
-                # for _ in range(0, len(root)):
-                # sys.stdout.write('\b')
-                # sys.stdout.flush()
         if not recursif:
             break
     del_stdout_char(charCount)
@@ -513,6 +516,11 @@ def printPretty(
     return 0
 
 
+# =====================================
+## MAIN -------------------------------
+# =====================================
+
+
 def main(path=None, recursif=False, verbose=False, filter=None, update=False, source=False, max_workers=5):
     ##
     matches = []
@@ -527,11 +535,6 @@ def main(path=None, recursif=False, verbose=False, filter=None, update=False, so
     # print_source(matches)
     ##
     return 0
-
-
-# =====================================
-## MAIN -------------------------------
-# =====================================
 
 
 def cli():
