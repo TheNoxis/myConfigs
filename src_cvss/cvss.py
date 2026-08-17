@@ -27,7 +27,7 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 
 import argcomplete  # PYTHON_ARGCOMPLETE_OK
-from prettytable.colortable import ColorTable, Theme
+from prettytable.colortable import ColorTable
 from termcolor import colored
 
 # =====================================
@@ -458,6 +458,9 @@ def _prepare_cvs(cvs, update=False):
     return cvs
 
 
+from prettytable import TableStyle
+
+
 def printPretty(
     matches,
     path=None,
@@ -468,11 +471,14 @@ def printPretty(
     max_workers=5,
 ):
     userHome = os.path.expanduser("~")
-    T = Theme()
-    T.vertical_color = "\u001b[33m"
-    T.horizontal_color = "\u001b[34m"
-    T.junction_color = "\u001b[33m"
-    x = ColorTable(theme=T)
+    # T = Theme()
+    # T.vertical_color = "\u001b[33m"
+    # T.horizontal_color = "\u001b[34m"
+    # T.junction_color = "\u001b[33m"
+    # x = ColorTable(theme=T)
+    x = ColorTable()
+    x.set_style(TableStyle.SINGLE_BORDER)
+
     field_names = ["Path"]
     if verbose:
         field_names.append("Type")
