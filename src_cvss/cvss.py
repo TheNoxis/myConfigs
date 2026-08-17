@@ -126,7 +126,7 @@ class Chkout(object):
         elif self.type == "git":
             # Fusionner les deux commandes git en une seule pour réduire les Popen
             cmd_combined = """
-            IN=$(git fetch --recurse-submodules=yes 2>/dev/null && git log --no-decorate ..origin/master 2>/dev/null | wc -l)
+            IN=$(git fetch --recurse-submodules=yes 2>/dev/null && git log --no-decorate --oneline ..origin/main 2>/dev/null | wc -l)
             OUT=$(git log --no-decorate --not --remotes --submodule 2>/dev/null | wc -l)
             echo "${IN} ${OUT}"
             """
@@ -137,6 +137,7 @@ class Chkout(object):
             cmd_out = "grep '^changeset' < <( hg out ) ||:"
         ##
         logger.debug("  path: %s" % self.path)
+
         ##
         if self.type == "git" and cmd_in is None:
             # Cas git avec commande combinée
