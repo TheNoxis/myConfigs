@@ -117,7 +117,7 @@ class Chkout(object):
         return "\033[0m"
 
     # Pour le IN/OUT
-    def status_remote(self):
+    def status_remote(self, update=False):
         # Le delta de revision entre IN et OUT sera en nombre de ligne de cmd_out
         if self.type == "svn":
             cmd_in = "svn diff --non-interactive -r HEAD --summarize ||:"
@@ -125,8 +125,11 @@ class Chkout(object):
             # Une substraction sera faire entre IN et out.
         elif self.type == "git":
             # Fusionner les deux commandes git en une seule pour réduire les Popen
-            cmd_combined = """
-            IN=$(git fetch --recurse-submodules=yes 2>/dev/null && git log --no-decorate --oneline ..origin/main 2>/dev/null | wc -l)
+            cmd_combined = ""
+            if update:
+                cmd_combined += "git fetch --recurse-submodules=yes 2>/dev/null;"
+            cmd_combined += """
+            IN=$(git log --no-decorate --oneline ..origin/main 2>/dev/null | wc -l)
             OUT=$(git log --no-decorate --not --remotes --submodule 2>/dev/null | wc -l)
             echo "${IN} ${OUT}"
             """
@@ -447,8 +450,8 @@ def _prepare_cvs(cvs, update=False):
     cvs.status()
     # Récupérer les infos remote seulement si update est True
     if update:
-        cvs.status_remote()
         cvs.update()
+    cvs.status_remote(update=update)
     # Cache les conversions de type pour IN/OUT
     cvs._in_is_digit = str(cvs.IN).isdigit()
     cvs._out_is_digit = str(cvs.OUT).isdigit()
