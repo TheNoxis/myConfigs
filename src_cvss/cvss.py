@@ -399,7 +399,7 @@ def find_repository(path, recursif=False, filter=None):
         dirnames[:] = [d for d in dirnames if not d.startswith(".") or d in namePattern]
 
         # Ne pas scanner les répertoires cachés en eux-mêmes.
-        if (root.startswith(".") and not root.startswith("./")) or root.startswith("./."):
+        if ((root.startswith(".") and root != ".") and not root.startswith("./")) or root.startswith("./."):
             continue
 
         for dirname in dirnames:
