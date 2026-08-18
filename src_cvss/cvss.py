@@ -10,7 +10,7 @@
 # Create date: 2017/01/23 - 23:16
 # Copyright: (C) 2017 Stéphane Henry
 # Describle:
-#
+# CVS Status est un outil pour lister les répertoires CVS (git, svn, hg) et afficher leur état.
 
 
 # =====================================
@@ -27,6 +27,7 @@ import sys
 from concurrent.futures import ThreadPoolExecutor
 
 import argcomplete  # PYTHON_ARGCOMPLETE_OK
+from prettytable import TableStyle
 from prettytable.colortable import ColorTable
 from termcolor import colored
 
@@ -61,6 +62,7 @@ class Chkout(object):
         self.statusRemoteCode = 0
         self.msg = []
         self.path = path
+        self.branch = None
         self.type = typeCvs
         userHome = os.path.expanduser("~")
         self._cPath = path.replace(userHome, "~", 1)  # Cache cPath
@@ -219,7 +221,38 @@ class Chkout(object):
             rData = "-"
         return rData
 
+    def get_branch(self):
+        if self.type == "svn":
+            cmd = "svn info --show-item relative-url"
+        elif self.type == "git":
+            cmd = "git rev-parse --abbrev-ref HEAD"
+        elif self.type == "hg":
+            cmd = "hg branch"
+        ##
+        try:
+            p = subprocess.Popen(
+                'cd "%s" && %s' % (self.path, cmd),
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                shell=True,
+                universal_newlines=True,
+            )
+            stdout, stderr = p.communicate()
+            rcode = p.wait()
+            if rcode != 0:
+                logger.debug("STDOUT: %s" % stdout)
+                logger.debug("STDERR: %s" % stderr)
+                logger.debug("RCODE: %d" % rcode)
+                self.branch = None
+            else:
+                self.branch = str(stdout).strip()
+        except Exception as e:
+            logger.error("Get branch error: %s" % e)
+            self.branch = None
+        return self.branch
+
     def status(self):
+        self.get_branch()
         ##
         if self.type == "svn":
             cmd = "svn status --non-interactive"
@@ -442,9 +475,6 @@ def print_source(matches):
     return True
 
 
-# def print_info(
-
-
 def _prepare_cvs(cvs, update=False):
     """Prépare un CVS en parallèle : appelle status() et optionnellement update() et status_remote()."""
     cvs.status()
@@ -456,9 +486,6 @@ def _prepare_cvs(cvs, update=False):
     cvs._in_is_digit = str(cvs.IN).isdigit()
     cvs._out_is_digit = str(cvs.OUT).isdigit()
     return cvs
-
-
-from prettytable import TableStyle
 
 
 def printPretty(
@@ -480,6 +507,7 @@ def printPretty(
     x.set_style(TableStyle.SINGLE_BORDER)
 
     field_names = ["Path"]
+    field_names.append("Branch")
     if verbose:
         field_names.append("Type")
     field_names.extend(
@@ -497,6 +525,7 @@ def printPretty(
     x.field_names = field_names
     x.align = "c"
     x.align["Path"] = "l"
+    x.align["Branch"] = "l"
 
     # Paralléliser la préparation des repos (status + update)
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
@@ -505,6 +534,9 @@ def printPretty(
     for cvs in matches:
         root = cvs.cPath.replace(userHome, "~", 1)
         row = [root]
+        row.append(
+            colored(cvs.branch, "light_green") if cvs.branch in ["main", "master"] else colored(cvs.branch, "light_red")
+        )
         if verbose:
             row.append(cvs.type)
         row.extend(
