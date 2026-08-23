@@ -535,7 +535,7 @@ def printPretty(
         root = cvs.cPath.replace(userHome, "~", 1)
         row = [root]
         row.append(
-            colored(cvs.branch, "light_green") if cvs.branch in ["main", "master"] else colored(cvs.branch, "light_red")
+            colored(cvs.branch, "light_green") if cvs.branch in ["main", "master"] else colored(cvs.branch, "yellow")
         )
         if verbose:
             row.append(cvs.type)
