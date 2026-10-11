@@ -140,7 +140,7 @@ function build_autocompletion {
 	echo "> Generate autocompletion"
 
 	## Completion des binaires courants
-	BIN_LIST=(kubectl helm argocd kubescape trivy k9s istioctl cilium hubble velero flux fluxcd gh ghq asdf podman oc docker)
+	BIN_LIST=(kubectl helm argocd kubescape trivy k9s istioctl cilium hubble velero flux fluxcd gh ghq asdf podman oc docker tea novops)
 	for binComp in "${BIN_LIST[@]}"; do
 		if which ${binComp} &>/dev/null; then
 			echo "  ${binComp} ..."

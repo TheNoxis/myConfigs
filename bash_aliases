@@ -3,7 +3,7 @@
 ## ALIASES -----------------------------------------
 # ==================================================
 
-alias d='~/bin/df.pl'
+alias d='python3 ~/bin/df.py'
 alias q='cd -'
 alias s='cd ..'
 alias tailf='tail -f -n 40'
@@ -115,9 +115,10 @@ fi
 ## Libvirt
 alias vml='virsh list --all --title'
 alias vnl='virsh net-list --all'
-alias vmn='virsh list --all --name | xargs -L1 virsh domifaddr --full'
+alias vmn='virsh list --all --name --state-running | xargs -L1 virsh domifaddr --full'
 alias vmb='virsh list --all --name | xargs -L1 virsh domblklist --details'
 alias vpl='virsh pool-list --all --details'
+alias vvl="virsh pool-list --name | xargs  -r -I{} -- sh -c 'echo \">> Volume: {}\"; virsh vol-list --details {}'"
 
 ## Docker
 alias dps="docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.Size}}\t{{.State}}\t{{.Networks}}\t{{.Ports}}'"
@@ -333,7 +334,7 @@ alias tfa="clear; terraform apply"
 alias tff="terraform fmt"
 alias tfv="terraform validate"
 alias tfl="tflint"
-alias tfs="trivy fs --scanners vuln,misconfig,secret,license ."
+alias tfs="trivy fs --skip-version-check --scanners vuln,misconfig,secret,license ."
 
 # OpenShift CLI
 alias oc="env KUBECOLOR_KUBECTL=oc kubecolor"

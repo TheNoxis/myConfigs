@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 # vim: ts=4 syntax=python
 
 
@@ -52,10 +51,8 @@ C_END = "\033[0m"
 # =====================================
 
 
-class Chkout(object):
-    """
-    Ma class test trop cool.
-    """
+class Chkout:
+    """Class to store information about a CVS checkout (git, svn, hg)."""
 
     def __init__(self, typeCvs, path):
         self.statusCode = 0
@@ -80,7 +77,6 @@ class Chkout(object):
             # Pour svn conflit
             "C": 0,
         }
-        return None
 
     def __del__(self):
         return True
@@ -93,6 +89,7 @@ class Chkout(object):
         return v
 
     def color(self, name):
+        """Retourne la couleur ANSI pour le status donné."""
         v = self.data[name]
 
         if not str(v).isdigit():
@@ -120,6 +117,8 @@ class Chkout(object):
 
     # Pour le IN/OUT
     def status_remote(self, update=False):
+        """Fonction de controle de décalage avec le repo distant de reference."""
+
         # Le delta de revision entre IN et OUT sera en nombre de ligne de cmd_out
         if self.type == "svn":
             cmd_in = "svn diff --non-interactive -r HEAD --summarize ||:"
@@ -141,7 +140,7 @@ class Chkout(object):
             cmd_in = "grep '^changeset' < <( hg in )  ||:"
             cmd_out = "grep '^changeset' < <( hg out ) ||:"
         ##
-        logger.debug("  path: %s" % self.path)
+        logger.debug(f"  path: {self.path}")
 
         ##
         if self.type == "git" and cmd_in is None:
@@ -156,7 +155,7 @@ class Chkout(object):
     def _exec_git_combined(self, cmd):
         """Exécute une commande git combinée pour IN et OUT."""
         try:
-            logger.debug("CMD: %s" % cmd)
+            logger.debug(f"CMD: {cmd}")
             p = subprocess.Popen(
                 cmd,
                 cwd=self.path,
@@ -168,9 +167,9 @@ class Chkout(object):
             )
             stdout, stderr = p.communicate()
             rcode = p.wait()
-            logger.debug("STDOUT: %s" % stdout)
-            logger.debug("STDERR: %s" % stderr)
-            logger.debug("RCODE: %d" % rcode)
+            logger.debug(f"STDOUT: {stdout}")
+            logger.debug(f"STDERR: {stderr}")
+            logger.debug(f"RCODE: {rcode}")
 
             if rcode != 0 or not stdout.strip():
                 self.msg.append("Remote (git) KO!")
@@ -186,14 +185,16 @@ class Chkout(object):
                     self.data["IN"] = 0
                     self.data["OUT"] = 0
         except Exception as e:
-            logger.error("Git combined error: %s" % e)
+            logger.error(f"Git combined error: {e}")
             self.data["IN"] = "X"
             self.data["OUT"] = "X"
 
     def exec_IN_OUT(self, cmd=None):
+        """Fonction exec dediere pour le IN/OUT."""
+
         if cmd:
             rData = ""
-            logger.debug("CMD: %s" % cmd)
+            logger.debug(f"CMD: {cmd}")
             p = subprocess.Popen(
                 cmd,
                 cwd=self.path,
@@ -206,9 +207,9 @@ class Chkout(object):
             stdout, stderr = p.communicate()
             try:
                 rcode = p.wait()
-                logger.debug("STDOUT: %s" % stdout)
-                logger.debug("STDERR: %s" % stderr)
-                logger.debug("-RCODE: %d" % rcode)
+                logger.debug(f"STDOUT: {stdout}")
+                logger.debug(f"STDERR: {stderr}")
+                logger.debug(f"_RCODE: {rcode}")
                 if rcode != 0:
                     self.msg.append("Remote (in) KO!")
                     self.statusRemoteCode = rcode
@@ -216,7 +217,7 @@ class Chkout(object):
                     rData = len(str(stdout).rstrip("\n").split("\n")) - 1
             except Exception as e:
                 rData = "X"
-                logger.error(e)
+                logger.error(f"Error occurred: {e}")
         else:
             rData = "-"
         return rData
@@ -231,7 +232,7 @@ class Chkout(object):
         ##
         try:
             p = subprocess.Popen(
-                'cd "%s" && %s' % (self.path, cmd),
+                f'cd "{self.path}" && {cmd}',
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 shell=True,
@@ -240,14 +241,14 @@ class Chkout(object):
             stdout, stderr = p.communicate()
             rcode = p.wait()
             if rcode != 0:
-                logger.debug("STDOUT: %s" % stdout)
-                logger.debug("STDERR: %s" % stderr)
-                logger.debug("RCODE: %d" % rcode)
+                logger.debug(f"STDOUT: {stdout}")
+                logger.debug(f"STDERR: {stderr}")
+                logger.debug(f"_RCODE: {rcode}")
                 self.branch = None
             else:
                 self.branch = str(stdout).strip()
         except Exception as e:
-            logger.error("Get branch error: %s" % e)
+            logger.error(f"Get branch error: {e}")
             self.branch = None
         return self.branch
 
@@ -261,12 +262,12 @@ class Chkout(object):
         elif self.type == "hg":
             cmd = "hg status"
         ##
-        logger.debug("path: %s" % self.path)
-        logger.debug(" cmd: %s" % cmd)
+        logger.debug(f"path: {self.path}")
+        logger.debug(f" cmd: {cmd}")
         ##
         try:
             p = subprocess.Popen(
-                'cd "%s" && %s' % (self.path, cmd),
+                f'cd "{self.path}" && {cmd}',
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 shell=True,
@@ -277,25 +278,25 @@ class Chkout(object):
             if rcode != 0:
                 stderr = stderr.split("\n")
                 # self.msg.append('%s on error' % cmd)
-                logger.debug("STDOUT: %s" % stdout)
-                logger.debug("STDERR: %s" % stderr)
-                logger.debug("RCODE: %d" % rcode)
+                logger.debug(f"STDOUT: {stdout}")
+                logger.debug(f"STDERR: {stderr}")
+                logger.debug(f"_RCODE: {rcode}")
                 if len(stderr) == 2:
                     self.msg.append(stderr[0])
                 else:
                     self.msg.append("Local KO!")
                 self.statusCode = 1
         except Exception as e:
-            logger.error("Check status error: %s" % e)
+            logger.error(f"Check status error: {e}")
             return self.data
 
         ##
-        logger.debug(stdout)
+        logger.debug(f"stdout: {stdout}")
         # for line in str(stdout).split('\n'):
         for line in stdout.split("\n"):
-            logger.debug("Status stdout line: %s" % line)
+            logger.debug(f"Status stdout line: {line}")
             try:
-                (status, file) = line.split()
+                (status, _) = line.split()
             except ValueError:
                 continue
             try:
@@ -303,15 +304,24 @@ class Chkout(object):
             except KeyError:
                 self.data[status] = 1
 
-        ## Renommage des clés du dico:
-        if "!" in self.data.keys():
-            self.data["E"] = self.data.pop("!")
-        if "?" in self.data.keys():
-            self.data["U"] = self.data.pop("?")
-        if "AM" in self.data.keys():
-            self.data["A"] += self.data.pop("AM")
-        if "??" in self.data.keys():
-            self.data["U"] += self.data.pop("??")
+        ## Classification par catégorie (A, M, D, E, U, C) pour simplifier l'affichage:
+        categories = [
+            # Git status !: fichier en erreur dans l'index. On considère que c'est un fichier en erreur.
+            ("!", "E"),
+            # Git status ?: fichier inconnu dans l'index et dans le working tree. On considère que c'est un fichier inconnu.
+            ("?", "U"),
+            # Git status AM: fichier ajouté dans l'index et modifié dans le working tree. On considère que c'est un fichier ajouté.
+            ("AM", "A"),
+            # Git status ??: fichier inconnu dans l'index et dans le working tree. On considère que c'est un fichier inconnu.
+            ("??", "U"),
+            # Git status MM: fichier modifié dans l'index et dans le working tree. On considère que c'est un fichier modifié.
+            ("MM", "M"),
+        ]
+        for status, categorie in categories:
+            try:
+                self.data[categorie] = self.data.pop(status)
+            except KeyError:
+                pass
 
         # Note: status_remote() est appelée seulement si update=True (voir _prepare_cvs)
 
@@ -341,7 +351,7 @@ class Chkout(object):
             self.status_color = C_PURPLE
         else:
             self.status_color = C_RED
-        logger.debug("self_data_out: %d & self_data_in: %d" % (self_data_out, self_data_in))
+        logger.debug(f"self_data_out: {self_data_out} & self_data_in: {self_data_in}")
         ##
         return self.data
 
@@ -355,15 +365,16 @@ class Chkout(object):
         ##
         try:
             p = subprocess.Popen(
-                'cd "%s" && %s' % (self.path, cmd),
+                f'cd "{self.path}" && {cmd}',
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 shell=True,
             )
             stdout, stderr = p.communicate()
-            p.wait()
-            # rcode = p.wait()
-            # if rcode != 0:
+            # p.wait()
+            rcode = p.wait()
+            if rcode != 0:
+                logger.error(f"Error executing source command: {cmd}, return code: {rcode}\n {stderr}")
             # self.msg.append('Update faild.')
             # else:
             # self.msg.append('Update %d commit done.' % self.date['IN'])
@@ -387,12 +398,12 @@ class Chkout(object):
         elif self.type == "hg":
             cmd = "hg pull -u"
         ##
-        logger.debug("path: %s" % self.path)
-        logger.debug(" cmd: %s" % cmd)
+        logger.debug(f"path: {self.path}")
+        logger.debug(f" cmd: {cmd}")
         ##
         try:
             p = subprocess.Popen(
-                'cd "%s" && %s' % (self.path, cmd),
+                f'cd "{self.path}" && {cmd}',
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 shell=True,
@@ -400,11 +411,12 @@ class Chkout(object):
             stdout, stderr = p.communicate()
             rcode = p.wait()
             if rcode != 0:
+                logger.error(f"Error executing update command: {cmd}, return code: {rcode}\n {stdout} {stderr}")
                 self.msg.append(C_RED + "Update faild." + C_END)
             else:
-                self.msg.append("Update %d commit done." % self.date["IN"])
+                self.msg.append(f"Update {self.date['IN']} commit done.")
         except Exception as e:
-            logger.debug(e)
+            logger.debug(f"Error occurred: {e}")
             return False
         ##
         return True
@@ -416,13 +428,14 @@ class Chkout(object):
 
 
 def del_stdout_char(charCount):
-    for _ in range(0, charCount):
+    for _ in range(charCount):
         sys.stdout.write("\b")
     sys.stdout.flush()
     return True
 
 
 def find_repository(path, recursif=False, filter=None):
+    logger.debug(f"Scanning: {path}")
     charCount = 0
     matches = []
     namePattern = [".svn", ".git", ".hg"]
@@ -442,7 +455,7 @@ def find_repository(path, recursif=False, filter=None):
                 if filter and not filter.search(root):
                     continue
                 cvsType = dirname[1:]
-                logger.debug("> %s (%s)" % (root, cvsType))
+                logger.debug(f"> {root} ({cvsType})")
 
                 # On affiche des points pour chaque repertoire trouvé:
                 sys.stdout.write(".")
@@ -463,8 +476,7 @@ def print_source(matches):
     maxPathLen = 0
     for cvs in matches:
         pathLen = len(cvs.cPath)
-        if maxPathLen < pathLen:
-            maxPathLen = pathLen
+        maxPathLen = max(maxPathLen, pathLen)
     ##
     for cvs in matches:
         cvs.cPath.replace(userHome, "~", 1)
@@ -552,7 +564,6 @@ def printPretty(
             ]
         )
         x.add_row(row)
-    #
     print(x)
     return 0
 
@@ -566,9 +577,14 @@ def main(path=None, recursif=False, verbose=False, filter=None, update=False, so
     ##
     matches = []
     for p in path:
-        matches += find_repository(p, recursif=recursif, filter=filter)
+        matches += find_repository(os.path.abspath(p), recursif=recursif, filter=filter)
     ## Trie alphabetic des chemins:
     matches.sort(key=operator.attrgetter("path"))
+
+    if not matches:
+        logger.error("No repository found.")
+        return 1
+
     ##
     #  print_info(matches, source=source, verbose=verbose, update=update)
     printPretty(matches, source=source, verbose=verbose, update=update, max_workers=max_workers)
@@ -581,7 +597,7 @@ def main(path=None, recursif=False, verbose=False, filter=None, update=False, so
 def cli():
     """Point d'entrée pour pipx/console scripts."""
     ## Traitement des arguments:
-    parser = argparse.ArgumentParser(description="Multi CVS tool.")
+    parser = argparse.ArgumentParser(description="CVS Status tool.")
     parser.add_argument("-d", "--debug", action="store_true", default=False, help="Enable debug mode.")
     parser.add_argument(
         "-v",

@@ -25,13 +25,16 @@ zsh.d/cache
 **/*completion*/*k9s
 **/*completion*/*kubectl
 **/*completion*/*kubescape
+**/*completion*/*novops
 **/*completion*/*oc
 **/*completion*/*pipx
 **/*completion*/*podman
 **/*completion*/*stern
+**/*completion*/*tea
 **/*completion*/*trivy
 **/*completion*/*vagrant
 **/*completion*/*velero
+
 
 ## Local script for personal overwrite :
 mesConfigs.local.sh
