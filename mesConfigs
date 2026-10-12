@@ -142,10 +142,15 @@ function build_autocompletion {
 	## Completion des binaires courants
 	BIN_LIST=(kubectl helm argocd kubescape trivy k9s istioctl cilium hubble velero flux fluxcd gh ghq asdf podman oc docker tea novops glab mise)
 	for binComp in "${BIN_LIST[@]}"; do
+		pre_args=""
+		if [[ "${binComp}" == "glab" ]]; then
+			# Glab utilise l'option -s pour definir le shell
+			pre_args="-s"
+		fi
 		if which ${binComp} &>/dev/null; then
 			echo "  ${binComp} ..."
-			${binComp} completion zsh > "${HOME}/.zsh.d/completion/_${binComp}"
-			${binComp} completion bash > "${HOME}/.bash_completion.d/${binComp}"
+			${binComp} completion $pre_args zsh > "${HOME}/.zsh.d/completion/_${binComp}"
+			${binComp} completion $pre_args bash > "${HOME}/.bash_completion.d/${binComp}"
 		fi
 	done
 
