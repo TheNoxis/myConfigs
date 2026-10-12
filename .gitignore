@@ -18,6 +18,7 @@ zsh.d/cache
 **/*completion*/*fluxcd
 **/*completion*/*gh
 **/*completion*/*ghq
+**/*completion*/*glab
 **/*completion*/*helm
 **/*completion*/*hubble
 **/*completion*/*istioctl
@@ -25,6 +26,7 @@ zsh.d/cache
 **/*completion*/*k9s
 **/*completion*/*kubectl
 **/*completion*/*kubescape
+**/*completion*/*mise
 **/*completion*/*novops
 **/*completion*/*oc
 **/*completion*/*pipx
@@ -34,7 +36,6 @@ zsh.d/cache
 **/*completion*/*trivy
 **/*completion*/*vagrant
 **/*completion*/*velero
-
 
 ## Local script for personal overwrite :
 mesConfigs.local.sh
