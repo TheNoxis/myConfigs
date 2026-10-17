@@ -15,6 +15,7 @@
 # use goenv 1.24.2
 
 ##
+# export NOVOPS_ENVIRONMENT=prod
 # use novops
 
 ## Variable d'environnement pour kubernetes

@@ -9,6 +9,8 @@
 
 config:
   hashivault:
+    # address: "https://vault.example.com"
+
 environments:
   prod:
     variables:
