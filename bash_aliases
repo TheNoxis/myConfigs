@@ -321,6 +321,9 @@ alias v="vagrant"
 
 ## Vault
 alias vault-oidc="vault login --method=oidc"
+alias vault-info="vault token lookup"
+alias vault-renew="vault token renew"
+alias vault-revoke="vault token revoke \$(vault token lookup | awk '/^id / {print \$2}')"
 
 ## Teraform
 alias tfdebug='export TF_LOG=$([ "$TF_LOG" != "DEBUG" ] && echo "DEBUG" || echo ""); echo "> Terraform log: $TF_LOG"'

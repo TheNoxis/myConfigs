@@ -32,6 +32,7 @@ zsh.d/cache
 **/*completion*/*pipx
 **/*completion*/*podman
 **/*completion*/*stern
+**/*completion*/*talosctl
 **/*completion*/*tea
 **/*completion*/*trivy
 **/*completion*/*vagrant
